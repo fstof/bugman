@@ -1,19 +1,34 @@
+import 'dart:ui';
+
 import 'package:bonfire/bonfire.dart';
 
-class DummyPlayer extends SimplePlayer {
+class DummyPlayer extends SimplePlayer with ObjectCollision {
   DummyPlayer()
       : super(
           position: Vector2.zero(),
+          width: 32,
+          height: 32,
           animation: SimpleDirectionAnimation(
-            idleLeft: PlayerSpriteSheet.idleLeft,
-            idleRight: PlayerSpriteSheet.idleRight,
-            runRight: PlayerSpriteSheet.runRight,
-            runLeft: PlayerSpriteSheet.runLeft,
+            idleLeft: _SpriteSheet.idleLeft,
+            idleRight: _SpriteSheet.idleRight,
+            runRight: _SpriteSheet.runRight,
+            runLeft: _SpriteSheet.runLeft,
           ),
-        );
+        ) {
+    setupCollision(
+      CollisionConfig(
+        collisions: [
+          CollisionArea.rectangle(
+            size: Size(width * 0.6, height * 0.6),
+            align: Vector2(8, 8),
+          )
+        ],
+      ),
+    );
+  }
 }
 
-class PlayerSpriteSheet {
+class _SpriteSheet {
   static Future<SpriteAnimation> get idleLeft => SpriteAnimation.load(
         "player/Adventurer Sprite Sheet left v1.3.png",
         SpriteAnimationData.sequenced(
