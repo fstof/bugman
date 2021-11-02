@@ -1,6 +1,8 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
 
+import 'src/game/player/dummy_player.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -40,6 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
           enable: true,
         ),
       ),
+      player: DummyPlayer(),
     );
   }
 }
