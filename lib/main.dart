@@ -49,6 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // showCollisionArea: true,
       cameraConfig: CameraConfig(
         moveOnlyMapArea: true,
+        // zoom: 4,
       ),
       map: TiledWorldMap(
         'maps/map1.json',

@@ -70,6 +70,12 @@ class EnemyBug extends SimpleEnemy
   void update(double dt) {
     super.update(dt);
     moveTimer?.update(dt);
+    // seeAndMoveToPlayer(
+    //   closePlayer: (player) {
+    //     print('I am here');
+    //   },
+    //   radiusVision: 9999,
+    // );
   }
 }
 

@@ -30,35 +30,35 @@ class DummyPlayer extends SimplePlayer with ObjectCollision {
 
 class _SpriteSheet {
   static Future<SpriteAnimation> get idleLeft => SpriteAnimation.load(
-        "player/Adventurer Sprite Sheet left v1.3.png",
+        "player/player_idle.png",
         SpriteAnimationData.sequenced(
-          amount: 13,
+          amount: 7,
           stepTime: 0.1,
           textureSize: Vector2(32, 32),
           texturePosition: Vector2(0, 0),
         ),
       );
   static Future<SpriteAnimation> get runLeft => SpriteAnimation.load(
-        "player/Adventurer Sprite Sheet left v1.3.png",
+        "player/player_run.png",
         SpriteAnimationData.sequenced(
           amount: 8,
-          stepTime: 0.1,
-          textureSize: Vector2(32, 32),
-          texturePosition: Vector2(0, 32),
-        ),
-      );
-
-  static Future<SpriteAnimation> get idleRight => SpriteAnimation.load(
-        "player/Adventurer Sprite Sheet v1.3.png",
-        SpriteAnimationData.sequenced(
-          amount: 13,
           stepTime: 0.1,
           textureSize: Vector2(32, 32),
           texturePosition: Vector2(0, 0),
         ),
       );
+
+  static Future<SpriteAnimation> get idleRight => SpriteAnimation.load(
+        "player/player_idle.png",
+        SpriteAnimationData.sequenced(
+          amount: 7,
+          stepTime: 0.1,
+          textureSize: Vector2(32, 32),
+          texturePosition: Vector2(0, 32),
+        ),
+      );
   static Future<SpriteAnimation> get runRight => SpriteAnimation.load(
-        "player/Adventurer Sprite Sheet v1.3.png",
+        "player/player_run.png",
         SpriteAnimationData.sequenced(
           amount: 8,
           stepTime: 0.1,
