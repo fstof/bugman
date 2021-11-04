@@ -30,8 +30,9 @@ class EnemyBug extends SimpleEnemy
       ),
     );
     setupMoveToPositionAlongThePath(
-      pathLineStrokeWidth: 0,
+      pathLineStrokeWidth: 4,
       tileSizeIsSizeCollision: true,
+      showBarriersCalculated: true,
     );
   }
 
@@ -39,9 +40,10 @@ class EnemyBug extends SimpleEnemy
   Future<void> onLoad() async {
     super.onLoad();
     moveTimer = Timer(
-      2,
+      1,
       repeat: true,
       callback: () {
+        // print('moving to player');
         if (gameRef.player == null || gameRef.player!.isDead) return;
         moveToPositionAlongThePath(
           gameRef.player!.position.center.toVector2(),
@@ -55,6 +57,8 @@ class EnemyBug extends SimpleEnemy
   void onCollision(GameComponent component, bool active) {
     super.onCollision(component, active);
     if (component is Player) {
+      stopMoveAlongThePath();
+
       // gameRef.camera.shake(duration: 0.5);
       // gameRef.camera.animateZoom(
       //   zoom: 4,
@@ -70,6 +74,22 @@ class EnemyBug extends SimpleEnemy
   void update(double dt) {
     super.update(dt);
     moveTimer?.update(dt);
+
+    if (!isMovingAlongThePath) {
+      // moveToPositionAlongThePath(
+      //   gameRef.player!.position.center.toVector2(),
+      //   ignoreCollisions: [gameRef.player],
+      // );
+
+      // runRandomMovement(
+      //   dt,
+      //   maxDistance: (tileSize * 5).toInt(),
+      //   minDistance: (tileSize * 1).toInt(),
+      //   runOnlyVisibleInCamera: false,
+      //   speed: speed,
+      //   // timeKeepStopped: 0,
+      // );
+    }
     // seeAndMoveToPlayer(
     //   closePlayer: (player) {
     //     print('I am here');
