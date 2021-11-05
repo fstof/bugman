@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 
@@ -10,3 +11,5 @@ bool isMobile() {
   }
   return false;
 }
+
+final gameRandom = Random();

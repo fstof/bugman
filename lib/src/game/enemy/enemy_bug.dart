@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:bonfire/bonfire.dart';
 
+import '../utils.dart';
+
 class EnemyBug extends SimpleEnemy
     with ObjectCollision, AutomaticRandomMovement, MoveToPositionAlongThePath {
   Timer? moveTimer;
@@ -34,6 +36,7 @@ class EnemyBug extends SimpleEnemy
       pathLineStrokeWidth: 4,
       gridSizeIsCollisionSize: false,
       showBarriersCalculated: true,
+      pathLineColor: const Color(0xffffffff),
     );
   }
 
@@ -41,14 +44,15 @@ class EnemyBug extends SimpleEnemy
   Future<void> onLoad() async {
     super.onLoad();
     moveTimer = Timer(
-      1,
+      gameRandom.nextDouble() * 3,
       repeat: true,
       callback: () {
         // print('moving to player');
         if (gameRef.player == null || gameRef.player!.isDead) return;
+        final enemies = gameRef.componentsByType<Enemy>();
         moveToPositionAlongThePath(
           gameRef.player!.position.center.toVector2(),
-          ignoreCollisions: [gameRef.player],
+          ignoreCollisions: [gameRef.player, ...enemies],
         );
       },
     )..start();
@@ -82,14 +86,14 @@ class EnemyBug extends SimpleEnemy
       //   ignoreCollisions: [gameRef.player],
       // );
 
-      // runRandomMovement(
-      //   dt,
-      //   maxDistance: (tileSize * 5).toInt(),
-      //   minDistance: (tileSize * 1).toInt(),
-      //   runOnlyVisibleInCamera: false,
-      //   speed: speed,
-      //   // timeKeepStopped: 0,
-      // );
+      runRandomMovement(
+        dt,
+        maxDistance: (tileSize * 5).toInt(),
+        minDistance: (tileSize * 1).toInt(),
+        runOnlyVisibleInCamera: false,
+        speed: speed,
+        // timeKeepStopped: 0,
+      );
     }
     // seeAndMoveToPlayer(
     //   closePlayer: (player) {
