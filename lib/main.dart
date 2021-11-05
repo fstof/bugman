@@ -46,14 +46,14 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       player: DummyPlayer(),
-      // showCollisionArea: true,
+      showCollisionArea: true,
       cameraConfig: CameraConfig(
         moveOnlyMapArea: true,
         // zoom: 4,
       ),
       map: TiledWorldMap(
-        'maps/map1.json',
-        // 'maps/simple_map.json',
+        // 'maps/map1.json',
+        'maps/simple_map.json',
         forceTileSize: const Size(tileSize, tileSize),
         objectsBuilder: {
           'player_spawner': (properties) {

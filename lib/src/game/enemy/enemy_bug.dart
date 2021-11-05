@@ -11,7 +11,7 @@ class EnemyBug extends SimpleEnemy
           position: position - Vector2.all(16),
           height: 32,
           width: 32,
-          speed: 50,
+          speed: 51,
           animation: SimpleDirectionAnimation(
             idleLeft: _SpriteSheet.idleLeft,
             idleRight: _SpriteSheet.idleRight,
@@ -24,6 +24,7 @@ class EnemyBug extends SimpleEnemy
         collisions: [
           CollisionArea.rectangle(
             size: Size(width * 0.5, height * 0.5),
+            // size: Size(20, 20),
             align: Vector2(8, 16),
           )
         ],
@@ -31,7 +32,7 @@ class EnemyBug extends SimpleEnemy
     );
     setupMoveToPositionAlongThePath(
       pathLineStrokeWidth: 4,
-      tileSizeIsSizeCollision: true,
+      gridSizeIsCollisionSize: false,
       showBarriersCalculated: true,
     );
   }
