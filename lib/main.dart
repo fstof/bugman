@@ -2,6 +2,8 @@ import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
 
 import 'src/game/enemy/enemy_bug.dart';
+import 'src/game/pickups/gun.dart';
+import 'src/game/pickups/powerup.dart';
 import 'src/game/player/dummy_player.dart';
 import 'src/game/player/spawn.dart';
 import 'src/game/utils.dart';
@@ -46,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       player: DummyPlayer(),
-      showCollisionArea: true,
+      // showCollisionArea: true,
       cameraConfig: CameraConfig(
         moveOnlyMapArea: true,
         // zoom: 4,
@@ -63,8 +65,17 @@ class _MyHomePageState extends State<MyHomePage> {
             return Spawn(position: properties.position);
           },
           'enemy': (properties) {
-            return EnemyBug(position: properties.position);
+            return EnemyBug.createEnemy(
+              type: ButType.values[properties.others['type']],
+              position: properties.position,
+            );
           },
+          'gun': (properties) {
+            return Gun(position: properties.position);
+          },
+          'powerup': (properties) {
+            return Powerup(position: properties.position);
+          }
         },
       ),
     );

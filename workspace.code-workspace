@@ -1,0 +1,26 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"dart.lineLength": 100
+	},
+	"launch": {
+		"configurations": [
+			{
+				"name": "bugman",
+				"request": "launch",
+				"type": "dart"
+			},
+			{
+				"name": "bugman (profile mode)",
+				"request": "launch",
+				"type": "dart",
+				"flutterMode": "profile"
+			}
+		],
+		"compounds": []
+	}
+}

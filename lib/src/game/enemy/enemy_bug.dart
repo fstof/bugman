@@ -3,23 +3,27 @@ import 'dart:ui';
 import 'package:bonfire/bonfire.dart';
 
 import '../utils.dart';
+import 'grasshopper.dart';
+import 'moth.dart';
+import 'scorpion.dart';
+import 'spider.dart';
 
-class EnemyBug extends SimpleEnemy
+enum ButType { spyder, scorpion, moth, grasshopper }
+
+abstract class EnemyBug extends SimpleEnemy
     with ObjectCollision, AutomaticRandomMovement, MoveToPositionAlongThePath {
   Timer? moveTimer;
 
-  EnemyBug({required Vector2 position})
-      : super(
+  EnemyBug({
+    required Vector2 position,
+    required SimpleDirectionAnimation animation,
+    required double speed,
+  }) : super(
           position: position - Vector2.all(16),
-          height: 32,
-          width: 32,
-          speed: 51,
-          animation: SimpleDirectionAnimation(
-            idleLeft: _SpriteSheet.idleLeft,
-            idleRight: _SpriteSheet.idleRight,
-            runRight: _SpriteSheet.runRight,
-            runLeft: _SpriteSheet.runLeft,
-          ),
+          height: tileSize,
+          width: tileSize,
+          speed: speed,
+          animation: animation,
         ) {
     setupCollision(
       CollisionConfig(
@@ -33,18 +37,29 @@ class EnemyBug extends SimpleEnemy
       ),
     );
     setupMoveToPositionAlongThePath(
-      pathLineStrokeWidth: 4,
-      gridSizeIsCollisionSize: false,
-      showBarriersCalculated: true,
-      pathLineColor: const Color(0xffffffff),
+      showBarriersCalculated: false,
+      pathLineColor: const Color(0x00ffffff),
     );
+  }
+
+  factory EnemyBug.createEnemy({required ButType type, required Vector2 position}) {
+    switch (type) {
+      case ButType.spyder:
+        return Spider(position: position);
+      case ButType.grasshopper:
+        return Grasshopper(position: position);
+      case ButType.scorpion:
+        return Scorpion(position: position);
+      case ButType.moth:
+        return Moth(position: position);
+    }
   }
 
   @override
   Future<void> onLoad() async {
     super.onLoad();
     moveTimer = Timer(
-      gameRandom.nextDouble() * 3,
+      (gameRandom.nextDouble() * 3) + 1,
       repeat: true,
       callback: () {
         // print('moving to player');
@@ -102,44 +117,4 @@ class EnemyBug extends SimpleEnemy
     //   radiusVision: 9999,
     // );
   }
-}
-
-class _SpriteSheet {
-  static Future<SpriteAnimation> get idleLeft => SpriteAnimation.load(
-        "enemy/Cobra Sprite Sheet.png",
-        SpriteAnimationData.sequenced(
-          amount: 8,
-          stepTime: 0.1,
-          textureSize: Vector2(32, 32),
-          texturePosition: Vector2(0, 0),
-        ),
-      );
-  static Future<SpriteAnimation> get runLeft => SpriteAnimation.load(
-        "enemy/Cobra Sprite Sheet.png",
-        SpriteAnimationData.sequenced(
-          amount: 8,
-          stepTime: 0.1,
-          textureSize: Vector2(32, 32),
-          texturePosition: Vector2(0, 32),
-        ),
-      );
-
-  static Future<SpriteAnimation> get idleRight => SpriteAnimation.load(
-        "enemy/Cobra Sprite Sheet.png",
-        SpriteAnimationData.sequenced(
-          amount: 8,
-          stepTime: 0.1,
-          textureSize: Vector2(32, 32),
-          texturePosition: Vector2(0, 0),
-        ),
-      );
-  static Future<SpriteAnimation> get runRight => SpriteAnimation.load(
-        "enemy/Cobra Sprite Sheet.png",
-        SpriteAnimationData.sequenced(
-          amount: 8,
-          stepTime: 0.1,
-          textureSize: Vector2(32, 32),
-          texturePosition: Vector2(0, 32),
-        ),
-      );
 }

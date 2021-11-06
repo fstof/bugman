@@ -18,8 +18,7 @@ class Spawner extends GameComponent {
       final player = gameRef.player;
 
       if (spawnPoint.isNotEmpty && player != null) {
-        player.vectorPosition =
-            spawnPoint.first.vectorPosition - player.position.size * 0.5;
+        player.vectorPosition = spawnPoint.first.vectorPosition - player.position.size * 0.5;
         playerSpawned = true;
         removeFromParent();
       }

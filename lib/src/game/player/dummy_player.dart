@@ -2,7 +2,11 @@ import 'dart:ui';
 
 import 'package:bonfire/bonfire.dart';
 
+import '../pickups/gun.dart';
+
 class DummyPlayer extends SimplePlayer with ObjectCollision {
+  Gun? currentGun;
+
   DummyPlayer()
       : super(
           position: Vector2.zero(),
@@ -25,6 +29,29 @@ class DummyPlayer extends SimplePlayer with ObjectCollision {
         ],
       ),
     );
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+
+    if (currentGun != null) {
+      currentGun!.position = Vector2Rect(
+        position.position,
+        currentGun!.position.size,
+      );
+      if (currentGun!.timeToLive!.finished) {
+        currentGun = null;
+      }
+    }
+  }
+
+  void getGun(Gun gun) {
+    currentGun = gun;
+  }
+
+  void removeGun() {
+    currentGun = null;
   }
 }
 
