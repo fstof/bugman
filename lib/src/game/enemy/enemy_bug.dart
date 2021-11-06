@@ -101,14 +101,14 @@ abstract class EnemyBug extends SimpleEnemy
       //   ignoreCollisions: [gameRef.player],
       // );
 
-      runRandomMovement(
-        dt,
-        maxDistance: (tileSize * 5).toInt(),
-        minDistance: (tileSize * 1).toInt(),
-        runOnlyVisibleInCamera: false,
-        speed: speed,
-        // timeKeepStopped: 0,
-      );
+      // runRandomMovement(
+      //   dt,
+      //   maxDistance: (tileSize * 5).toInt(),
+      //   minDistance: (tileSize * 1).toInt(),
+      //   runOnlyVisibleInCamera: false,
+      //   speed: speed,
+      //   // timeKeepStopped: 0,
+      // );
     }
     // seeAndMoveToPlayer(
     //   closePlayer: (player) {

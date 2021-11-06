@@ -43,7 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
       joystick: Joystick(
         directional: isMobile() ? JoystickDirectional() : null,
         keyboardConfig: KeyboardConfig(
-          keyboardDirectionalType: KeyboardDirectionalType.arrows,
+          keyboardDirectionalType: KeyboardDirectionalType.wasdAndArrows,
           enable: true,
         ),
       ),
