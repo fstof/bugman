@@ -67,7 +67,10 @@ abstract class EnemyBug extends SimpleEnemy
         final enemies = gameRef.componentsByType<Enemy>();
         moveToPositionAlongThePath(
           gameRef.player!.position.center.toVector2(),
-          ignoreCollisions: [gameRef.player, ...enemies],
+          ignoreCollisions: [
+            gameRef.player,
+            // ...enemies,
+          ],
         );
       },
     )..start();
