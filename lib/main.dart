@@ -1,4 +1,5 @@
 import 'package:bonfire/bonfire.dart';
+import 'package:bugman/src/game/enemy/home_base.dart';
 import 'package:flutter/material.dart';
 
 import 'src/game/enemy/enemy_bug.dart';
@@ -70,6 +71,9 @@ class _MyHomePageState extends State<MyHomePage> {
           },
           'powerup': (properties) {
             return Powerup(position: properties.position);
+          },
+          'home': (properties) {
+            return HomeBase(position: properties.position, size: properties.size);
           }
         },
       ),

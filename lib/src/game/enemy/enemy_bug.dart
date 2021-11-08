@@ -4,6 +4,7 @@ import 'package:bonfire/bonfire.dart';
 
 import '../utils.dart';
 import 'grasshopper.dart';
+import 'home_base.dart';
 import 'moth.dart';
 import 'scorpion.dart';
 import 'spider.dart';
@@ -13,6 +14,7 @@ enum ButType { spyder, scorpion, moth, grasshopper }
 abstract class EnemyBug extends SimpleEnemy
     with ObjectCollision, AutomaticRandomMovement, MoveToPositionAlongThePath {
   Timer? moveTimer;
+  bool _goingHom = false;
 
   EnemyBug({
     required Vector2 position,
@@ -63,15 +65,7 @@ abstract class EnemyBug extends SimpleEnemy
       repeat: true,
       callback: () {
         // print('moving to player');
-        if (gameRef.player == null || gameRef.player!.isDead) return;
-        final enemies = gameRef.componentsByType<Enemy>();
-        moveToPositionAlongThePath(
-          gameRef.player!.position.center.toVector2(),
-          ignoreCollisions: [
-            gameRef.player,
-            // ...enemies,
-          ],
-        );
+        _moveToPlayer();
       },
     )..start();
   }
@@ -80,7 +74,8 @@ abstract class EnemyBug extends SimpleEnemy
   void onCollision(GameComponent component, bool active) {
     super.onCollision(component, active);
     if (component is Player) {
-      stopMoveAlongThePath();
+      // stopMoveAlongThePath();
+      _returnToHome();
 
       // gameRef.camera.shake(duration: 0.5);
       // gameRef.camera.animateZoom(
@@ -119,5 +114,39 @@ abstract class EnemyBug extends SimpleEnemy
     //   },
     //   radiusVision: 9999,
     // );
+  }
+
+  void _moveToPlayer() {
+    if (!_goingHom) {
+      if (gameRef.player == null || gameRef.player!.isDead) return;
+      // final enemies = gameRef.componentsByType<Enemy>();
+      moveToPositionAlongThePath(
+        gameRef.player!.position.center.toVector2(),
+        ignoreCollisions: [
+          gameRef.player,
+          // ...enemies,
+        ],
+      );
+    }
+  }
+
+  void _returnToHome() {
+    final home = gameRef.componentsByType<HomeBase>().first;
+    _goingHom = true;
+    moveToPositionAlongThePath(
+      home.position.center.toVector2(),
+      ignoreCollisions: [
+        home
+        // gameRef.player,
+        // ...enemies,
+      ],
+    );
+  }
+
+  void homeReached() {
+    _goingHom = false;
+    if (!isMovingAlongThePath) {
+      _moveToPlayer();
+    }
   }
 }
