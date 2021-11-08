@@ -39,6 +39,7 @@ dependencies:
 # dependency_overrides: 
 #   bonfire:
 #     path: ../../../playground/flutter/bonfire_fstof/
+#     path: /Users/william/Source/bonfire
 
 dev_dependencies:
   flutter_test:

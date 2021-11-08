@@ -7,6 +7,7 @@ import 'src/game/pickups/powerup.dart';
 import 'src/game/player/dummy_player.dart';
 import 'src/game/player/spawn.dart';
 import 'src/game/utils.dart';
+import 'package:bugman/src/game/bugman_joystick.dart';
 
 void main() {
   runApp(const MyApp());
@@ -40,13 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return BonfireTiledWidget(
-      joystick: Joystick(
-        directional: isMobile() ? JoystickDirectional() : null,
-        keyboardConfig: KeyboardConfig(
-          keyboardDirectionalType: KeyboardDirectionalType.wasdAndArrows,
-          enable: true,
-        ),
-      ),
+      joystick: BugmanJoystick(),
       player: DummyPlayer(),
       // showCollisionArea: true,
       cameraConfig: CameraConfig(
