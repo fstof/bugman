@@ -12,15 +12,20 @@ import 'spider.dart';
 enum ButType { spyder, scorpion, moth, grasshopper }
 
 abstract class EnemyBug extends SimpleEnemy
-    with Sensor, AutomaticRandomMovement, MoveToPositionAlongThePath {
+    with AutomaticRandomMovement, MoveToPositionAlongThePath {
   Timer? moveTimer;
-  bool _goingHom = false;
+  Timer? homeTimer;
+  bool _goingHome = false;
+  final double originalSpeed;
+  final double homeSpeed;
 
   EnemyBug({
     required Vector2 position,
     required SimpleDirectionAnimation animation,
     required double speed,
-  }) : super(
+  })  : originalSpeed = speed,
+        homeSpeed = speed * 2,
+        super(
           position: position - Vector2.all(16),
           height: tileSize,
           width: tileSize,
@@ -50,83 +55,55 @@ abstract class EnemyBug extends SimpleEnemy
   Future<void> onLoad() async {
     super.onLoad();
     moveTimer = Timer(
-      (gameRandom.nextDouble() * 3) + 1,
+      2,
       repeat: true,
       callback: () {
-        // print('moving to player');
-        _moveToPlayer();
+        if (!_goingHome) _moveToPlayer();
       },
     )..start();
-  }
-
-  @override
-  void onContact(GameComponent component) {
-    if (component is Player) {
-      _returnToHome();
-      gameRef.camera.animateRotate(angle: dToR(gameRandom.nextBool() ? -5 : 5));
-    }
   }
 
   @override
   void update(double dt) {
     super.update(dt);
     moveTimer?.update(dt);
-
-    if (!isMovingAlongThePath) {
-      // moveToPositionAlongThePath(
-      //   gameRef.player!.position.center.toVector2(),
-      //   ignoreCollisions: [gameRef.player],
-      // );
-
-      // runRandomMovement(
-      //   dt,
-      //   maxDistance: (tileSize * 5).toInt(),
-      //   minDistance: (tileSize * 1).toInt(),
-      //   runOnlyVisibleInCamera: false,
-      //   speed: speed,
-      //   // timeKeepStopped: 0,
-      // );
-    }
-    // seeAndMoveToPlayer(
-    //   closePlayer: (player) {
-    //     print('I am here');
-    //   },
-    //   radiusVision: 9999,
-    // );
+    homeTimer?.update(dt);
   }
 
   void _moveToPlayer() {
-    if (!_goingHom) {
+    if (!_goingHome) {
       if (gameRef.player == null || gameRef.player!.isDead) return;
-      // final enemies = gameRef.componentsByType<Enemy>();
       moveToPositionAlongThePath(
         gameRef.player!.position.center.toVector2(),
-        ignoreCollisions: [
-          gameRef.player,
-          // ...enemies,
-        ],
+        ignoreCollisions: [gameRef.player],
       );
     }
   }
 
-  void _returnToHome() {
-    final home = gameRef.componentsByType<HomeBase>().first;
-    _goingHom = true;
-    moveToPositionAlongThePath(
-      home.position.center.toVector2(),
-      ignoreCollisions: [
-        home
-        // gameRef.player,
-        // ...enemies,
-      ],
-    );
+  void returnToHome() {
+    if (_goingHome) return;
+
+    _goingHome = true;
+    stopMoveAlongThePath();
+
+    homeTimer = Timer(
+      0.5,
+      callback: () {
+        speed = homeSpeed;
+        final home = gameRef.componentsByType<HomeBase>().first;
+        moveToPositionAlongThePath(
+          home.position.center.toVector2(),
+          // ignoreCollisions: [gameRef.player],
+        );
+      },
+    )..start();
   }
 
-  void homeReached() {
-    _goingHom = false;
+  void seekPlayer() {
+    _goingHome = false;
+    speed = originalSpeed;
     if (!isMovingAlongThePath) {
       _moveToPlayer();
-      gameRef.camera.animateRotate(angle: 0);
     }
   }
 }

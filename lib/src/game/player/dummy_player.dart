@@ -6,6 +6,7 @@ import '../pickups/gun.dart';
 import '../utils.dart';
 
 class DummyPlayer extends SimplePlayer with ObjectCollision {
+  Timer? shootTimer;
   Gun? currentGun;
 
   DummyPlayer()
@@ -35,6 +36,7 @@ class DummyPlayer extends SimplePlayer with ObjectCollision {
   @override
   void update(double dt) {
     super.update(dt);
+    shootTimer?.update(dt);
 
     if (currentGun != null) {
       currentGun!.position = Vector2Rect(
@@ -47,12 +49,26 @@ class DummyPlayer extends SimplePlayer with ObjectCollision {
     }
   }
 
+  @override
+  void joystickChangeDirectional(JoystickDirectionalEvent event) {
+    super.joystickChangeDirectional(event);
+    currentGun?.direction = event.directional;
+  }
+
   void getGun(Gun gun) {
     currentGun = gun;
+    shootTimer = Timer(
+      1,
+      repeat: true,
+      callback: () {
+        currentGun?.shoot();
+      },
+    )..start();
   }
 
   void removeGun() {
     currentGun = null;
+    shootTimer = null;
   }
 }
 

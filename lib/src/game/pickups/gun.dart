@@ -9,17 +9,15 @@ import 'bullet.dart';
 class Gun extends GameComponent with Sensor {
   bool used = false;
   Timer? timeToLive;
-  Timer? shootTimer;
   double totalTime = 10;
+  Bullet? currentBullet;
+  Direction? _direction;
 
   Gun({required Vector2 position}) : super() {
     super.position = Vector2Rect(
       Vector2(position.x - 16, position.y - 16),
       Vector2(32, 32),
     );
-    shootTimer = Timer(2, repeat: true, callback: () {
-      shoot();
-    });
   }
 
   @override
@@ -34,13 +32,10 @@ class Gun extends GameComponent with Sensor {
   @override
   void update(double dt) {
     super.update(dt);
-    // timeToLive?.update(dt);
-    shootTimer?.update(dt);
-
-    // if (position.overlaps(gameRef.player!.position)) {
-    //   pickUp();
-    //   (gameRef.player as DummyPlayer).getGun(this);
-    // }
+    if (currentBullet != null) {
+      currentBullet?.position = position.copyWith(position: _bulletPosition);
+      currentBullet?.angle = _bulletAngle;
+    }
   }
 
   @override
@@ -75,42 +70,64 @@ class Gun extends GameComponent with Sensor {
     })
       ..start();
 
-    shootTimer?.start();
-
     used = true;
   }
 
-  void shoot() {
-    double angle;
-    final direction = directionThePlayerIsIn();
-
-    switch (direction) {
-      case Direction.up:
-        angle = dToR(90);
+  set direction(JoystickMoveDirectional directional) {
+    switch (directional) {
+      case JoystickMoveDirectional.MOVE_UP:
+        _direction = Direction.up;
         break;
-      case Direction.down:
-        angle = dToR(270);
+      case JoystickMoveDirectional.MOVE_DOWN:
+        _direction = Direction.down;
         break;
-      case Direction.left:
-        angle = dToR(180);
+      case JoystickMoveDirectional.MOVE_LEFT:
+        _direction = Direction.left;
         break;
-      case Direction.right:
-        angle = dToR(0);
+      case JoystickMoveDirectional.MOVE_RIGHT:
+        _direction = Direction.right;
         break;
-      default:
-        angle = dToR(0);
     }
+  }
 
-    gameRef.add(Bullet(
-      position: Bullet.bulletPositionForDirection(
-        angle,
-        position.position,
-        tileSize * 0.7,
-      ),
-      radAngle: angle,
-      damage: 100,
-      maxDistance: 50,
-      speed: 200,
+  Vector2 get _bulletPosition {
+    switch (_direction) {
+      case Direction.up:
+        return position.translate(-(100 - tileSize / 2), -((100 + tileSize / 2))).position;
+      case Direction.down:
+        return position.translate(-(100 - tileSize / 2), (100 + tileSize / 2)).position;
+      case Direction.left:
+        return position.translate(-200, 0).position;
+      case Direction.right:
+        return position.translate((tileSize), 0).position;
+      default:
+        return position.position;
+    }
+  }
+
+  double get _bulletAngle {
+    switch (_direction) {
+      case Direction.up:
+        return dToR(-90);
+      case Direction.down:
+        return dToR(90);
+      case Direction.left:
+        return dToR(0);
+      case Direction.right:
+        return dToR(0);
+      default:
+        return dToR(0);
+    }
+  }
+
+  void shoot() {
+    gameRef.add(currentBullet = Bullet(
+      position: _bulletPosition,
+      angle: _bulletAngle,
+      onAnimationEnd: () {
+        currentBullet?.removeFromParent();
+        currentBullet = null;
+      },
     ));
   }
 }

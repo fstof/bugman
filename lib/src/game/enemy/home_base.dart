@@ -14,14 +14,7 @@ class HomeBase extends GameComponent with Sensor {
   @override
   void onContact(GameComponent component) {
     if (component is EnemyBug) {
-      component.homeReached();
+      component.seekPlayer();
     }
-  }
-
-  @override
-  void render(Canvas canvas) {
-    super.render(canvas);
-    // canvas.drawRect(position.rect, Paint()..color = Color(0xffffffff));
-    // canvas.drawCircle(position.center, 32, Paint()..color = Color(0xff000000));
   }
 }
