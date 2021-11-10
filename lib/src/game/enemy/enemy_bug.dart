@@ -12,7 +12,7 @@ import 'spider.dart';
 enum ButType { spyder, scorpion, moth, grasshopper }
 
 abstract class EnemyBug extends SimpleEnemy
-    with ObjectCollision, AutomaticRandomMovement, MoveToPositionAlongThePath {
+    with Sensor, AutomaticRandomMovement, MoveToPositionAlongThePath {
   Timer? moveTimer;
   bool _goingHom = false;
 
@@ -27,17 +27,6 @@ abstract class EnemyBug extends SimpleEnemy
           speed: speed,
           animation: animation,
         ) {
-    setupCollision(
-      CollisionConfig(
-        collisions: [
-          CollisionArea.rectangle(
-            size: Size(width * 0.5, height * 0.5),
-            // size: Size(20, 20),
-            align: Vector2(8, 16),
-          )
-        ],
-      ),
-    );
     setupMoveToPositionAlongThePath(
       showBarriersCalculated: false,
       pathLineColor: const Color(0x00ffffff),
@@ -71,20 +60,10 @@ abstract class EnemyBug extends SimpleEnemy
   }
 
   @override
-  void onCollision(GameComponent component, bool active) {
-    super.onCollision(component, active);
+  void onContact(GameComponent component) {
     if (component is Player) {
-      // stopMoveAlongThePath();
       _returnToHome();
-
-      // gameRef.camera.shake(duration: 0.5);
-      // gameRef.camera.animateZoom(
-      //   zoom: 4,
-      //   duration: const Duration(milliseconds: 500),
-      //   finish: () {
-      //     gameRef.camera.animateZoom(zoom: 1);
-      //   },
-      // );
+      gameRef.camera.animateRotate(angle: dToR(gameRandom.nextBool() ? -5 : 5));
     }
   }
 
@@ -147,6 +126,7 @@ abstract class EnemyBug extends SimpleEnemy
     _goingHom = false;
     if (!isMovingAlongThePath) {
       _moveToPlayer();
+      gameRef.camera.animateRotate(angle: 0);
     }
   }
 }

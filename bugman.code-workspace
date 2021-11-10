@@ -12,13 +12,15 @@
 			{
 				"name": "bugman",
 				"request": "launch",
-				"type": "dart"
+				"type": "dart",
+				"program": "lib/main.dart"
 			},
 			{
 				"name": "bugman (profile mode)",
 				"request": "launch",
 				"type": "dart",
-				"flutterMode": "profile"
+				"flutterMode": "profile",
+				"program": "lib/main.dart"
 			}
 		],
 		"compounds": []
