@@ -1,14 +1,15 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:bugman/src/game/enemy/home_base.dart';
 import 'package:flutter/material.dart';
 
+import 'src/game/bugman_joystick.dart';
 import 'src/game/enemy/enemy_bug.dart';
+import 'src/game/enemy/home_base.dart';
+import 'src/game/pickups/collectable.dart';
 import 'src/game/pickups/gun.dart';
 import 'src/game/pickups/powerup.dart';
 import 'src/game/player/dummy_player.dart';
 import 'src/game/player/spawn.dart';
 import 'src/game/utils.dart';
-import 'package:bugman/src/game/bugman_joystick.dart';
 
 void main() {
   runApp(const MyApp());
@@ -74,6 +75,9 @@ class _MyHomePageState extends State<MyHomePage> {
           },
           'home': (properties) {
             return HomeBase(position: properties.position, size: properties.size);
+          },
+          'collect': (properties) {
+            return Collectable(position: properties.position);
           }
         },
       ),

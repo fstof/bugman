@@ -18,8 +18,9 @@ class Gun extends GameComponent with Sensor {
   Gun({required Vector2 position}) : super() {
     super.position = Vector2Rect(
       Vector2(position.x - 16, position.y - 16),
-      Vector2(32, 32),
+      Vector2.all(tileSize),
     );
+    setupSensorArea(Vector2Rect(Vector2.zero(), Vector2.all(tileSize)), intervalCheck: 10);
   }
 
   @override
@@ -133,15 +134,15 @@ class Gun extends GameComponent with Sensor {
         case Direction.up:
           return position
               .translate(
-                -(bulletSized[_powerUp]!.x / 2 - bulletSized[_powerUp]!.y / 2),
-                -(bulletSized[_powerUp]!.x / 2 + bulletSized[_powerUp]!.y / 2),
+                -(bulletSized[_powerUp]!.x / 2 - tileSize / 2),
+                -(bulletSized[_powerUp]!.x / 2 + tileSize / 2),
               )
               .position;
         case Direction.down:
           return position
               .translate(
-                -(bulletSized[_powerUp]!.x / 2 - bulletSized[_powerUp]!.y / 2),
-                (bulletSized[_powerUp]!.x / 2 + bulletSized[_powerUp]!.y / 2),
+                -(bulletSized[_powerUp]!.x / 2 - tileSize / 2),
+                (bulletSized[_powerUp]!.x / 2 + tileSize / 2),
               )
               .position;
         case Direction.left:
@@ -154,7 +155,7 @@ class Gun extends GameComponent with Sensor {
         case Direction.right:
           return position
               .translate(
-                (bulletSized[_powerUp]!.y),
+                tileSize,
                 0,
               )
               .position;

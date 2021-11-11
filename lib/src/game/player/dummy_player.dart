@@ -74,6 +74,10 @@ class DummyPlayer extends SimplePlayer with ObjectCollision {
   void powerup() {
     currentGun?.powerUp = true;
   }
+
+  void addScore(int score) {
+    // implement this
+  }
 }
 
 class _SpriteSheet {

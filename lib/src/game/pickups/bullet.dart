@@ -3,7 +3,7 @@ import 'package:bonfire/bonfire.dart';
 import '../enemy/enemy_bug.dart';
 import '../utils.dart';
 
-class Bullet extends AnimatedObject {
+class Bullet extends AnimatedObject with Sensor {
   static const length = tileSize * 3;
 
   Timer? _showTimer;
@@ -19,6 +19,8 @@ class Bullet extends AnimatedObject {
   }) {
     this.position = Vector2Rect(position, size);
     this.angle = angle ?? 0;
+
+    setupSensorArea(Vector2Rect(Vector2.zero(), size), intervalCheck: 10);
   }
 
   @override
@@ -34,6 +36,13 @@ class Bullet extends AnimatedObject {
   }
 
   @override
+  void onContact(GameComponent component) {
+    if (component is EnemyBug) {
+      component.returnToHome();
+    }
+  }
+
+  @override
   void update(double dt) {
     width = length;
     if (shouldRemove) return;
@@ -41,32 +50,10 @@ class Bullet extends AnimatedObject {
     super.update(dt);
     _showTimer?.update(dt);
 
-    final enemies = gameRef.componentsByType<EnemyBug>();
-    for (var enemy in enemies) {
-      if (enemy.position.overlaps(position)) {
-        enemy.returnToHome();
-        // removeFromParent();
-      }
-    }
     if (animation?.isLastFrame ?? false) {
       onAnimationEnd();
     }
   }
-
-  // @override
-  // void render(Canvas canvas) {
-  //   super.render(canvas);
-  //   canvas.drawRect(
-  //     position.rect,
-  //     Paint()..color = const Color(0xff000000),
-  //   );
-  // }
-
-  // @override
-  // void render(Canvas canvas) {
-  //   super.render(canvas);
-  // }
-
 }
 
 class BulletSpriteSheet {

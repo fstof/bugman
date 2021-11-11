@@ -1,11 +1,14 @@
 import 'dart:ui';
 
 import 'package:bonfire/bonfire.dart';
-import 'package:bugman/src/game/player/dummy_player.dart';
+
+import '../player/dummy_player.dart';
+import '../utils.dart';
 
 class Powerup extends GameComponent with Sensor {
   Powerup({required Vector2 position}) : super() {
-    super.position = Vector2Rect(position, Vector2(32, 32));
+    this.position = Vector2Rect(position - Vector2(tileSize, tileSize) / 2, Vector2.all(tileSize));
+    setupSensorArea(Vector2Rect(Vector2.zero(), Vector2.all(tileSize)), intervalCheck: 10);
   }
 
   @override
@@ -20,7 +23,7 @@ class Powerup extends GameComponent with Sensor {
   render(Canvas canvas) {
     super.render(canvas);
     canvas.drawCircle(
-      position.offset,
+      position.center,
       10,
       Paint()..color = const Color(0xffff00ff),
     );

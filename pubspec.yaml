@@ -70,6 +70,7 @@ flutter:
     - assets/images/maps/
     - assets/images/player/
     - assets/images/enemy/
+    - assets/images/objects/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
