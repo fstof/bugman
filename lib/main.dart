@@ -6,7 +6,7 @@ import 'src/game/enemy/enemy_bug.dart';
 import 'src/game/enemy/home_base.dart';
 import 'src/game/pickups/collectable.dart';
 import 'src/game/pickups/gun.dart';
-import 'src/game/pickups/powerup.dart';
+import 'src/game/pickups/power_up.dart';
 import 'src/game/player/dummy_player.dart';
 import 'src/game/player/spawn.dart';
 import 'src/game/utils.dart';
@@ -71,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
             return Gun(position: properties.position);
           },
           'powerup': (properties) {
-            return Powerup(position: properties.position);
+            return PowerUp(position: properties.position);
           },
           'home': (properties) {
             return HomeBase(position: properties.position, size: properties.size);

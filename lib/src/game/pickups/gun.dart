@@ -1,12 +1,10 @@
-import 'dart:ui';
-
 import 'package:bonfire/bonfire.dart';
 
 import '../player/dummy_player.dart';
 import '../utils.dart';
 import 'bullet.dart';
 
-class Gun extends GameComponent with Sensor {
+class Gun extends GameDecoration with Sensor {
   Timer? timeToLive;
   Timer? powerUpTimer;
   var used = false;
@@ -15,12 +13,24 @@ class Gun extends GameComponent with Sensor {
   Bullet? currentBullet;
   Direction? _direction;
 
-  Gun({required Vector2 position}) : super() {
-    super.position = Vector2Rect(
-      Vector2(position.x - 16, position.y - 16),
-      Vector2.all(tileSize),
-    );
+  Sprite? inHand;
+  SpriteAnimation? idle;
+
+  Gun({required Vector2 position})
+      : super(
+          position: Vector2(position.x - 16, position.y - 16),
+          width: tileSize,
+          height: tileSize,
+        ) {
     setupSensorArea(Vector2Rect(Vector2.zero(), Vector2.all(tileSize)), intervalCheck: 10);
+  }
+
+  @override
+  Future<void> onLoad() async {
+    super.onLoad();
+    inHand = await _SpriteSheet.spriteInHand;
+    idle = await _SpriteSheet.spriteIdle;
+    animation = idle;
   }
 
   @override
@@ -29,6 +39,8 @@ class Gun extends GameComponent with Sensor {
     if (component is DummyPlayer) {
       _pickUp();
       component.getGun(this);
+      animation = null;
+      sprite = inHand;
     }
   }
 
@@ -41,32 +53,6 @@ class Gun extends GameComponent with Sensor {
       // currentBullet!.position = currentBullet!.position.copyWith(position: _bulletPosition);
       // currentBullet!.angle = _bulletAngle;
     }
-  }
-
-  @override
-  render(Canvas canvas) {
-    super.render(canvas);
-    canvas.drawCircle(
-      position.translate(0, -6).center,
-      2,
-      Paint()..color = const Color(0xff000000),
-    );
-    canvas.drawCircle(
-      position.translate(0, -1).center,
-      4,
-      Paint()..color = const Color(0xffaaaaaa),
-    );
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(
-        Rect.fromCenter(center: position.translate(0, 7).center, width: 8, height: 16),
-        const Radius.circular(2),
-      ),
-      Paint()..color = const Color(0xff0000ff),
-    );
-    canvas.drawRect(
-      Rect.fromCenter(center: position.translate(0, 7).center, width: 8, height: 5),
-      Paint()..color = const Color(0xff00ffff),
-    );
   }
 
   void _pickUp() {
@@ -208,3 +194,20 @@ final bulletSized = <bool, Vector2>{
   false: Vector2(Bullet.length, tileSize),
   true: Vector2(Bullet.length, Bullet.length),
 };
+
+class _SpriteSheet {
+  static Future<Sprite> get spriteInHand => Sprite.load(
+        "objects/spray-can.png",
+        srcPosition: Vector2.zero(),
+        srcSize: Vector2(tileSize, tileSize),
+      );
+  static Future<SpriteAnimation> get spriteIdle => SpriteAnimation.load(
+        "objects/spray-can.png",
+        SpriteAnimationData.sequenced(
+          amount: 6,
+          stepTime: 0.1,
+          textureSize: Vector2(tileSize, tileSize),
+          texturePosition: Vector2.zero(),
+        ),
+      );
+}
