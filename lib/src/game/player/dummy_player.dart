@@ -70,6 +70,10 @@ class DummyPlayer extends SimplePlayer with ObjectCollision {
     currentGun = null;
     shootTimer = null;
   }
+
+  void powerup() {
+    currentGun?.powerUp = true;
+  }
 }
 
 class _SpriteSheet {
