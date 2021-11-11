@@ -8,9 +8,10 @@ import 'bullet.dart';
 
 class Gun extends GameComponent with Sensor {
   Timer? timeToLive;
+  Timer? powerUpTimer;
   var used = false;
-  var totalTime = 10.0;
-  var powerUp = false;
+  var totalTime = 30.0;
+  var _powerUp = false;
   Bullet? currentBullet;
   Direction? _direction;
 
@@ -33,6 +34,8 @@ class Gun extends GameComponent with Sensor {
   @override
   void update(double dt) {
     super.update(dt);
+    powerUpTimer?.update(dt);
+    timeToLive?.update(dt);
     if (currentBullet != null) {
       // currentBullet!.position = currentBullet!.position.copyWith(position: _bulletPosition);
       // currentBullet!.angle = _bulletAngle;
@@ -92,26 +95,26 @@ class Gun extends GameComponent with Sensor {
   }
 
   Vector2 get _bulletPosition {
-    if (powerUp) {
+    if (_powerUp) {
       switch (_direction) {
         case Direction.up:
           return position
               .translate(
-                -(bulletSized[powerUp]!.x / 2 - tileSize / 2),
-                -(bulletSized[powerUp]!.x),
+                -(bulletSized[_powerUp]!.x / 2 - tileSize / 2),
+                -(bulletSized[_powerUp]!.x),
               )
               .position;
         case Direction.down:
           return position
               .translate(
-                -(bulletSized[powerUp]!.x / 2 - tileSize / 2),
+                -(bulletSized[_powerUp]!.x / 2 - tileSize / 2),
                 tileSize,
               )
               .position;
         case Direction.left:
           return position
               .translate(
-                -bulletSized[powerUp]!.x,
+                -bulletSized[_powerUp]!.x,
                 -tileSize,
               )
               .position;
@@ -130,28 +133,28 @@ class Gun extends GameComponent with Sensor {
         case Direction.up:
           return position
               .translate(
-                -(bulletSized[powerUp]!.x / 2 - bulletSized[powerUp]!.y / 2),
-                -(bulletSized[powerUp]!.x / 2 + bulletSized[powerUp]!.y / 2),
+                -(bulletSized[_powerUp]!.x / 2 - bulletSized[_powerUp]!.y / 2),
+                -(bulletSized[_powerUp]!.x / 2 + bulletSized[_powerUp]!.y / 2),
               )
               .position;
         case Direction.down:
           return position
               .translate(
-                -(bulletSized[powerUp]!.x / 2 - bulletSized[powerUp]!.y / 2),
-                (bulletSized[powerUp]!.x / 2 + bulletSized[powerUp]!.y / 2),
+                -(bulletSized[_powerUp]!.x / 2 - bulletSized[_powerUp]!.y / 2),
+                (bulletSized[_powerUp]!.x / 2 + bulletSized[_powerUp]!.y / 2),
               )
               .position;
         case Direction.left:
           return position
               .translate(
-                -bulletSized[powerUp]!.x,
+                -bulletSized[_powerUp]!.x,
                 0,
               )
               .position;
         case Direction.right:
           return position
               .translate(
-                (bulletSized[powerUp]!.y),
+                (bulletSized[_powerUp]!.y),
                 0,
               )
               .position;
@@ -179,14 +182,24 @@ class Gun extends GameComponent with Sensor {
   void shoot() {
     gameRef.add(currentBullet = Bullet(
       position: _bulletPosition,
-      size: bulletSized[powerUp]!,
-      animationFuture: powerUp ? BulletSpriteSheet.fire : BulletSpriteSheet.normal,
+      size: bulletSized[_powerUp]!,
+      animationFuture: _powerUp ? BulletSpriteSheet.fire : BulletSpriteSheet.normal,
       angle: _bulletAngle,
       onAnimationEnd: () {
         currentBullet?.removeFromParent();
         currentBullet = null;
       },
     ));
+  }
+
+  set powerUp(bool value) {
+    _powerUp = value;
+    if (value) {
+      powerUpTimer = Timer(5, callback: () {
+        _powerUp = false;
+      })
+        ..start();
+    }
   }
 }
 
