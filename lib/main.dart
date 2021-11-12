@@ -1,85 +1,50 @@
-import 'package:bonfire/bonfire.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'src/game/bugman_joystick.dart';
-import 'src/game/enemy/enemy_bug.dart';
-import 'src/game/enemy/home_base.dart';
-import 'src/game/pickups/collectable.dart';
-import 'src/game/pickups/gun.dart';
-import 'src/game/pickups/power_up.dart';
-import 'src/game/player/dummy_player.dart';
-import 'src/game/player/spawn.dart';
-import 'src/game/utils.dart';
+import 'src/bloc/cubit/game_cubit.dart';
+import 'src/ui/main_game.dart';
+import 'src/ui/main_menu.dart';
+import 'src/ui/theme.dart';
 
 void main() {
+  LicenseRegistry.addLicense(() async* {
+    final gfLicense = await rootBundle.loadString('assets/google_fonts/OFL.txt');
+    yield LicenseEntryWithLineBreaks(['google_fonts'], gfLicense);
+  });
+
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
+  State<MyApp> createState() => _MyAppState();
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class _MyAppState extends State<MyApp> {
+  bool inGame = false;
 
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return BonfireTiledWidget(
-      joystick: BugmanJoystick(),
-      player: DummyPlayer(),
-      // showCollisionArea: true,
-      cameraConfig: CameraConfig(
-        moveOnlyMapArea: true,
-        // zoom: 4,
-      ),
-      map: TiledWorldMap(
-        // 'maps/map1.json',
-        'maps/simple_map.json',
-        forceTileSize: const Size(tileSize, tileSize),
-        objectsBuilder: {
-          'player_spawner': (properties) {
-            return Spawner();
+    return BlocProvider(
+      create: (context) => GameCubit(),
+      child: MaterialApp(
+        title: 'Bugman',
+        theme: themeData,
+        home: BlocBuilder<GameCubit, GameState>(
+          builder: (context, state) {
+            if (state is GameInProgress || state is GameOver) {
+              return const MainGame();
+            } else {
+              return MainMenu(onPlay: () {
+                context.read<GameCubit>().startGame();
+              });
+            }
           },
-          'player': (properties) {
-            return Spawn(position: properties.position);
-          },
-          'enemy': (properties) {
-            return EnemyBug.createEnemy(
-              type: ButType.values[properties.others['type']],
-              position: properties.position,
-            );
-          },
-          'gun': (properties) {
-            return Gun(position: properties.position);
-          },
-          'powerup': (properties) {
-            return PowerUp(position: properties.position);
-          },
-          'home': (properties) {
-            return HomeBase(position: properties.position, size: properties.size);
-          },
-          'collect': (properties) {
-            return Collectable(position: properties.position);
-          }
-        },
+        ),
       ),
     );
   }

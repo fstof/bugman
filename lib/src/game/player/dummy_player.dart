@@ -2,14 +2,16 @@ import 'dart:ui';
 
 import 'package:bonfire/bonfire.dart';
 
+import '../../bloc/cubit/game_cubit.dart';
 import '../pickups/gun.dart';
 import '../utils.dart';
 
 class DummyPlayer extends SimplePlayer with ObjectCollision {
+  final GameCubit gameCubit;
   Timer? shootTimer;
   Gun? currentGun;
 
-  DummyPlayer()
+  DummyPlayer({required this.gameCubit})
       : super(
           position: Vector2.zero(),
           width: tileSize,
@@ -31,6 +33,13 @@ class DummyPlayer extends SimplePlayer with ObjectCollision {
         ],
       ),
     );
+  }
+
+  @override
+  void die() {
+    super.die();
+    gameCubit.gameOver();
+    removeFromParent();
   }
 
   @override
@@ -76,7 +85,7 @@ class DummyPlayer extends SimplePlayer with ObjectCollision {
   }
 
   void addScore(int score) {
-    // implement this
+    gameCubit.addScore(score);
   }
 }
 

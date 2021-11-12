@@ -12,7 +12,7 @@ import 'spider.dart';
 enum ButType { spyder, scorpion, moth, grasshopper }
 
 abstract class EnemyBug extends SimpleEnemy
-    with AutomaticRandomMovement, MoveToPositionAlongThePath {
+    with AutomaticRandomMovement, MoveToPositionAlongThePath, Sensor {
   Timer? moveTimer;
   Timer? homeTimer;
   bool _goingHome = false;
@@ -35,6 +35,14 @@ abstract class EnemyBug extends SimpleEnemy
     setupMoveToPositionAlongThePath(
       showBarriersCalculated: false,
       pathLineColor: const Color(0x00ffffff),
+    );
+
+    setupSensorArea(
+      Vector2Rect(
+        Vector2.zero(),
+        Vector2(width, height),
+      ),
+      intervalCheck: 10,
     );
   }
 
@@ -61,6 +69,13 @@ abstract class EnemyBug extends SimpleEnemy
         if (!_goingHome) _moveToPlayer();
       },
     )..start();
+  }
+
+  @override
+  void onContact(GameComponent component) {
+    if (component is Player) {
+      component.die();
+    }
   }
 
   @override
