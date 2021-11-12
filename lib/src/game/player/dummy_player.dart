@@ -64,6 +64,16 @@ class DummyPlayer extends SimplePlayer with ObjectCollision {
     currentGun?.direction = event.directional;
   }
 
+  @override
+  void onCollision(GameComponent component, bool active) {
+    super.onCollision(component, active);
+
+    if (component is TileWithCollision) {
+      joystickChangeDirectional(
+          JoystickDirectionalEvent(directional: JoystickMoveDirectional.IDLE));
+    }
+  }
+
   void getGun(Gun gun) {
     currentGun = gun;
     shootTimer = Timer(
