@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:bonfire/bonfire.dart';
@@ -10,6 +11,8 @@ class DummyPlayer extends SimplePlayer with ObjectCollision {
   final GameCubit gameCubit;
   Timer? shootTimer;
   Gun? currentGun;
+  JoystickMoveDirectional previousDirectional = JoystickMoveDirectional.IDLE;
+  final double collisionTestOffset = 15;
 
   DummyPlayer({required this.gameCubit})
       : super(
@@ -38,8 +41,8 @@ class DummyPlayer extends SimplePlayer with ObjectCollision {
   @override
   void die() {
     super.die();
-    gameCubit.gameOver();
-    removeFromParent();
+    //gameCubit.gameOver();
+    //removeFromParent();
   }
 
   @override
@@ -60,8 +63,48 @@ class DummyPlayer extends SimplePlayer with ObjectCollision {
 
   @override
   void joystickChangeDirectional(JoystickDirectionalEvent event) {
-    super.joystickChangeDirectional(event);
-    currentGun?.direction = event.directional;
+    var currentDirectional = event.directional;
+    var currentEvent = event;
+    if (currentDirectional != previousDirectional &&
+        currentDirectional != JoystickMoveDirectional.IDLE) {
+      double x = 0;
+      double y = 0;
+      if (currentDirectional == JoystickMoveDirectional.MOVE_UP) {
+        y = collisionTestOffset * -1;
+      } else if (currentDirectional == JoystickMoveDirectional.MOVE_DOWN) {
+        y = collisionTestOffset;
+      } else if (currentDirectional == JoystickMoveDirectional.MOVE_LEFT) {
+        x = collisionTestOffset * -1;
+      } else if (currentDirectional == JoystickMoveDirectional.MOVE_RIGHT) {
+        x = collisionTestOffset;
+      }
+
+      if (isCollision(
+          displacement:
+              Vector2(position.position.x + x, position.position.y + y),
+          shouldTriggerSensors: false)) {
+        currentEvent =
+            JoystickDirectionalEvent(directional: previousDirectional);
+      } else {
+        previousDirectional = event.directional;
+      }
+    }
+    super.joystickChangeDirectional(currentEvent);
+    currentGun?.direction = currentEvent.directional;
+
+    // if (event.directional == JoystickMoveDirectional.MOVE_UP &&
+    //     !isCollision(
+    //         displacement: Vector2(0, 5), shouldTriggerSensors: false)) {
+    //   super.joystickChangeDirectional(event);
+    //   currentGun?.direction = event.directional;
+    // } else if (event.directional == JoystickMoveDirectional.MOVE_UP) {
+    //   super.joystickChangeDirectional(JoystickDirectionalEvent(
+    //       directional: JoystickMoveDirectional.MOVE_LEFT));
+    //   currentGun?.direction = event.directional;
+    // } else {
+    //   super.joystickChangeDirectional(event);
+    //   currentGun?.direction = event.directional;
+    // }
   }
 
   @override
@@ -69,6 +112,7 @@ class DummyPlayer extends SimplePlayer with ObjectCollision {
     super.onCollision(component, active);
 
     if (component is TileWithCollision) {
+      //stop player when hiting a wall
       joystickChangeDirectional(
           JoystickDirectionalEvent(directional: JoystickMoveDirectional.IDLE));
     }
