@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:bonfire/bonfire.dart';
+import 'package:flame_audio/flame_audio.dart';
 
 import '../../bloc/cubit/game_cubit.dart';
 import '../pickups/gun.dart';
@@ -43,6 +44,7 @@ class DummyPlayer extends SimplePlayer with ObjectCollision {
     super.die();
     gameCubit.gameOver();
     removeFromParent();
+    FlameAudio.play('bleeps/die.wav');
   }
 
   @override
@@ -80,11 +82,9 @@ class DummyPlayer extends SimplePlayer with ObjectCollision {
       }
 
       if (isCollision(
-          displacement:
-              Vector2(position.position.x + x, position.position.y + y),
+          displacement: Vector2(position.position.x + x, position.position.y + y),
           shouldTriggerSensors: false)) {
-        currentEvent =
-            JoystickDirectionalEvent(directional: previousDirectional);
+        currentEvent = JoystickDirectionalEvent(directional: previousDirectional);
       } else {
         previousDirectional = event.directional;
       }
@@ -105,6 +105,7 @@ class DummyPlayer extends SimplePlayer with ObjectCollision {
   }
 
   void getGun(Gun gun) {
+    FlameAudio.play('bleeps/get-can.wav');
     currentGun = gun;
     shootTimer = Timer(
       1,
@@ -122,6 +123,7 @@ class DummyPlayer extends SimplePlayer with ObjectCollision {
 
   void powerup() {
     currentGun?.powerUp = true;
+    FlameAudio.play('bleeps/power-up.wav');
   }
 
   void addScore(int score) {

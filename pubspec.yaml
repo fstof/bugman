@@ -30,6 +30,7 @@ dependencies:
   flutter_bloc:
   equatable:
   bonfire:
+  flame_audio:
   flutter:
     sdk: flutter
 
@@ -70,6 +71,7 @@ flutter:
   assets:
     - assets/
     - assets/google_fonts/
+    - assets/audio//bleeps/
     - assets/images/
     - assets/images/maps/
     - assets/images/player/

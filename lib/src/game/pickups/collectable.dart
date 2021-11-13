@@ -1,4 +1,5 @@
 import 'package:bonfire/bonfire.dart';
+import 'package:flame_audio/flame_audio.dart';
 
 import '../player/dummy_player.dart';
 import '../utils.dart';
@@ -27,6 +28,7 @@ class Collectable extends GameDecoration with Sensor {
     if (component is DummyPlayer) {
       component.addScore(1);
       removeFromParent();
+      FlameAudio.play('bleeps/collect.wav');
     }
   }
 }

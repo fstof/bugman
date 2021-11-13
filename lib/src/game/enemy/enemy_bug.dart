@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:bonfire/bonfire.dart';
+import 'package:flame_audio/flame_audio.dart';
 
 import '../utils.dart';
 import 'grasshopper.dart';
@@ -97,6 +98,7 @@ abstract class EnemyBug extends SimpleEnemy
 
   void returnToHome() {
     if (_goingHome) return;
+    FlameAudio.play('bleeps/kill.wav');
 
     _goingHome = true;
     stopMoveAlongThePath();

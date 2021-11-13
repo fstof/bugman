@@ -1,3 +1,4 @@
+import 'package:bonfire/bonfire.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,11 +9,16 @@ import 'src/ui/main_game.dart';
 import 'src/ui/main_menu.dart';
 import 'src/ui/theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   LicenseRegistry.addLicense(() async* {
     final gfLicense = await rootBundle.loadString('assets/google_fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], gfLicense);
   });
+  if (!kIsWeb) {
+    await Flame.device.setLandscape();
+    await Flame.device.fullScreen();
+  }
 
   runApp(const MyApp());
 }

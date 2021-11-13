@@ -1,4 +1,5 @@
 import 'package:bonfire/bonfire.dart';
+import 'package:flame_audio/flame_audio.dart';
 
 import '../player/dummy_player.dart';
 import '../utils.dart';
@@ -167,6 +168,7 @@ class Gun extends GameDecoration with Sensor {
   }
 
   void shoot() {
+    FlameAudio.play('bleeps/spray.wav');
     gameRef.add(currentBullet = Bullet(
       position: _bulletPosition,
       size: bulletSized[_powerUp]!,
