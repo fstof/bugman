@@ -13,14 +13,16 @@
 				"name": "bugman",
 				"request": "launch",
 				"type": "dart",
-				"program": "lib/main.dart"
+				"program": "lib/main.dart",
+				"args": ["--web-renderer", "canvaskit"]
 			},
 			{
 				"name": "bugman (profile mode)",
 				"request": "launch",
 				"type": "dart",
 				"flutterMode": "profile",
-				"program": "lib/main.dart"
+				"program": "lib/main.dart",
+				"args": ["--web-renderer", "canvaskit"]
 			}
 		],
 		"compounds": []

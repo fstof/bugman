@@ -24,7 +24,10 @@ class PowerUp extends GameDecoration with Sensor {
   @override
   void onContact(GameComponent component) {
     if (component is DummyPlayer) {
-      component.powerup();
+      if (component.currentGun != null) {
+        component.addScore(100);
+        component.powerup();
+      }
       removeFromParent();
     }
   }

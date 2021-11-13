@@ -26,7 +26,7 @@ class Collectable extends GameDecoration with Sensor {
   @override
   void onContact(GameComponent component) {
     if (component is DummyPlayer) {
-      component.addScore(1);
+      component.addScore(10);
       removeFromParent();
       FlameAudio.play('bleeps/collect.wav');
     }

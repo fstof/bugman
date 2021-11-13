@@ -40,6 +40,7 @@ class Gun extends GameDecoration with Sensor {
     if (component is DummyPlayer) {
       _pickUp();
       component.getGun(this);
+      component.addScore(50);
       animation = null;
       sprite = inHand;
     }
