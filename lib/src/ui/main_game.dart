@@ -1,6 +1,7 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire/camera/camera_config.dart';
 import 'package:bonfire/tiled/tiled_world_map.dart';
+import 'package:bugman/src/game/hud/hud.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/src/provider.dart';
@@ -32,6 +33,7 @@ class MainGame extends StatelessWidget {
             moveOnlyMapArea: true,
             // zoom: 4,
           ),
+          interface: Hud(context.read<GameCubit>()),
           map: TiledWorldMap(
             // 'maps/map1.json',
             'maps/simple_map.json',

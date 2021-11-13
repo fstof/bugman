@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> {
         theme: themeData,
         home: BlocBuilder<GameCubit, GameState>(
           builder: (context, state) {
-            if (state is GameInProgress || state is GameOver) {
+            if (state is GameInProgress) {
               return const MainGame();
             } else {
               return MainMenu(onPlay: () {

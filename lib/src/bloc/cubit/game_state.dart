@@ -19,13 +19,8 @@ class GameInProgress extends GameState {
   List<Object?> get props => [score];
 }
 
-class GameOver extends GameState {
-  final int score;
-
+class GameOver extends GameInProgress {
   GameOver({
-    required this.score,
-  });
-
-  @override
-  List<Object?> get props => [score];
+    required int score,
+  }) : super(score: score);
 }
