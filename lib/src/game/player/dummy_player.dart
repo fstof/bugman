@@ -41,8 +41,8 @@ class DummyPlayer extends SimplePlayer with ObjectCollision {
   @override
   void die() {
     super.die();
-    //gameCubit.gameOver();
-    //removeFromParent();
+    gameCubit.gameOver();
+    removeFromParent();
   }
 
   @override
@@ -91,20 +91,6 @@ class DummyPlayer extends SimplePlayer with ObjectCollision {
     }
     super.joystickChangeDirectional(currentEvent);
     currentGun?.direction = currentEvent.directional;
-
-    // if (event.directional == JoystickMoveDirectional.MOVE_UP &&
-    //     !isCollision(
-    //         displacement: Vector2(0, 5), shouldTriggerSensors: false)) {
-    //   super.joystickChangeDirectional(event);
-    //   currentGun?.direction = event.directional;
-    // } else if (event.directional == JoystickMoveDirectional.MOVE_UP) {
-    //   super.joystickChangeDirectional(JoystickDirectionalEvent(
-    //       directional: JoystickMoveDirectional.MOVE_LEFT));
-    //   currentGun?.direction = event.directional;
-    // } else {
-    //   super.joystickChangeDirectional(event);
-    //   currentGun?.direction = event.directional;
-    // }
   }
 
   @override
