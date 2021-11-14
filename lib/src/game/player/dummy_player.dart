@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:bonfire/bonfire.dart';
 import 'package:flame_audio/flame_audio.dart';
 
-import '../../bloc/cubit/game_cubit.dart';
+import '../../cubit/game/game_cubit.dart';
 import '../pickups/gun.dart';
 import '../utils.dart';
 

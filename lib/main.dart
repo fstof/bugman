@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'src/bloc/cubit/game_cubit.dart';
+import 'src/cubit/game/game_cubit.dart';
+import 'src/cubit/glitch/glitch_cubit.dart';
 import 'src/ui/main_game.dart';
 import 'src/ui/main_menu.dart';
 import 'src/ui/theme.dart';
@@ -35,8 +36,15 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GameCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => GameCubit(),
+        ),
+        BlocProvider(
+          create: (context) => GlitchCubit(),
+        ),
+      ],
       child: MaterialApp(
         title: 'Bugman',
         theme: themeData,

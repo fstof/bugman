@@ -1,14 +1,17 @@
+import 'dart:ui';
+
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire/camera/camera_config.dart';
 import 'package:bonfire/tiled/tiled_world_map.dart';
-import 'package:bugman/src/game/glitcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/cubit/game_cubit.dart';
+import '../cubit/game/game_cubit.dart';
+import '../cubit/glitch/glitch_cubit.dart';
 import '../game/bugman_joystick.dart';
 import '../game/enemy/enemy_bug.dart';
 import '../game/enemy/home_base.dart';
+import '../game/glitcher.dart';
 import '../game/hud/hud.dart';
 import '../game/pickups/collectable.dart';
 import '../game/pickups/gun.dart';
@@ -20,6 +23,13 @@ import 'game_over.dart';
 
 class MainGame extends StatelessWidget {
   const MainGame({Key? key}) : super(key: key);
+
+  static const invertColorMatrix = <double>[
+    -1, 0, 0, 0, 255, //
+    0, -1, 0, 0, 255, //
+    0, 0, -1, 0, 255, //
+    0, 0, 0, 1, 0, //
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +43,9 @@ class MainGame extends StatelessWidget {
             moveOnlyMapArea: true,
             // zoom: 4,
           ),
+          onReady: (game) {
+            context.read<GlitchCubit>().start();
+          },
           interface: Hud(context.read<GameCubit>()),
           map: TiledWorldMap(
             // 'maps/map1.json',
@@ -64,10 +77,24 @@ class MainGame extends StatelessWidget {
                 return Collectable(position: properties.position);
               },
               'glitcher': (properties) {
-                return Glitcher();
+                return Glitcher(context.read<GlitchCubit>());
               },
             },
           ),
+        ),
+        BlocBuilder<GlitchCubit, GlitchState>(
+          builder: (context, state) {
+            if (state is Glitching && state.type == GlitchType.color) {
+              return Positioned.fill(
+                child: BackdropFilter(
+                  filter: const ColorFilter.matrix(invertColorMatrix),
+                  child: Container(color: Colors.black.withOpacity(0.0)),
+                ),
+              );
+            } else {
+              return const Offstage();
+            }
+          },
         ),
         BlocBuilder<GameCubit, GameState>(
           builder: (context, state) {

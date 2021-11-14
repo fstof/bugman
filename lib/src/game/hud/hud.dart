@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
 
-import '../../bloc/cubit/game_cubit.dart';
+import '../../cubit/game/game_cubit.dart';
 
 class Hud extends GameInterface {
   final GameCubit _gameCubit;
@@ -30,7 +30,9 @@ class Hud extends GameInterface {
   void update(double dt) {
     super.update(dt);
 
-    score = (_gameCubit.state as GameInProgress).score;
+    if (_gameCubit.state is GameInProgress) {
+      score = (_gameCubit.state as GameInProgress).score;
+    }
   }
 
   @override
