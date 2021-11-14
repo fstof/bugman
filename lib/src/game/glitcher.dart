@@ -28,12 +28,12 @@ class Glitcher extends GameComponent {
   }
 
   void _newCameraTimer() {
-    var time = (gameRandom.nextInt(10) + 10).toDouble();
-    _cameraTimer = Timer(time, callback: () {
+    var time = gameRandom.nextDouble() * 10 + 10;
+    _cameraTimer = Timer(time.toDouble(), callback: () {
       gameRef.camera.config.angle = dToR(gameRandom.nextInt(360).toDouble());
 
-      time = (gameRandom.nextInt(10)).toDouble();
-      _cameraResetTimer = Timer(time * 0.1, callback: () {
+      time = gameRandom.nextDouble() * 2;
+      _cameraResetTimer = Timer(time, callback: () {
         gameRef.camera.config.angle = 0;
         _newCameraTimer();
       })
@@ -43,16 +43,16 @@ class Glitcher extends GameComponent {
   }
 
   void _newTilesTimer() {
-    var time = (gameRandom.nextInt(10) + 10).toDouble();
-    _tilesTimer = Timer(time, callback: () {
+    var time = gameRandom.nextDouble() * 10 + 10;
+    _tilesTimer = Timer(time.toDouble(), callback: () {
       for (var element in gameRef.map.childrenTiles) {
         if (element.isObjectCollision()) {
           element.angle = dToR(1);
         }
       }
 
-      time = (gameRandom.nextInt(10)).toDouble();
-      _tilesResetTimer = Timer(time * 0.1, callback: () {
+      time = gameRandom.nextDouble() * 2;
+      _tilesResetTimer = Timer(time, callback: () {
         for (var element in gameRef.map.childrenTiles) {
           if (element.isObjectCollision()) {
             element.angle = 0;
