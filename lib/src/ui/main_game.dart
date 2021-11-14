@@ -1,15 +1,15 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire/camera/camera_config.dart';
 import 'package:bonfire/tiled/tiled_world_map.dart';
-import 'package:bugman/src/game/hud/hud.dart';
+import 'package:bugman/src/game/glitcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/src/provider.dart';
 
 import '../bloc/cubit/game_cubit.dart';
 import '../game/bugman_joystick.dart';
 import '../game/enemy/enemy_bug.dart';
 import '../game/enemy/home_base.dart';
+import '../game/hud/hud.dart';
 import '../game/pickups/collectable.dart';
 import '../game/pickups/gun.dart';
 import '../game/pickups/power_up.dart';
@@ -62,7 +62,10 @@ class MainGame extends StatelessWidget {
               },
               'collect': (properties) {
                 return Collectable(position: properties.position);
-              }
+              },
+              'glitcher': (properties) {
+                return Glitcher();
+              },
             },
           ),
         ),
