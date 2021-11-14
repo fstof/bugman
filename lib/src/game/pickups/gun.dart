@@ -80,6 +80,8 @@ class Gun extends GameDecoration with Sensor {
       case JoystickMoveDirectional.MOVE_RIGHT:
         _direction = Direction.right;
         break;
+      default:
+        _direction = null;
     }
   }
 

@@ -1,6 +1,7 @@
-import '../bloc/cubit/game_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/src/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../bloc/cubit/game_cubit.dart';
 
 class GameOverWidget extends StatelessWidget {
   const GameOverWidget({Key? key}) : super(key: key);
