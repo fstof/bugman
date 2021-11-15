@@ -22,7 +22,7 @@ class GameOverWidget extends StatelessWidget {
               children: [
                 OutlinedButton(
                   onPressed: () {
-                    context.read<GameCubit>().startGame();
+                    context.read<GameCubit>().retry();
                   },
                   child: Text('Retry', style: Theme.of(context).textTheme.headline2),
                 ),

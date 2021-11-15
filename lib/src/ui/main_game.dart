@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire/camera/camera_config.dart';
 import 'package:bonfire/tiled/tiled_world_map.dart';
+import 'package:bugman/src/ui/die_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,6 +13,7 @@ import '../game/bugman_joystick.dart';
 import '../game/enemy/enemy_bug.dart';
 import '../game/enemy/glitch_spawn.dart';
 import '../game/enemy/home_base.dart';
+import '../game/enemy/enemy_spawn.dart';
 import '../game/glitcher.dart';
 import '../game/hud/hud.dart';
 import '../game/pickups/collectable.dart';
@@ -20,7 +22,7 @@ import '../game/pickups/power_up.dart';
 import '../game/player/bugman_player.dart';
 import '../game/player/spawn.dart';
 import '../game/utils.dart';
-import 'game_over.dart';
+import 'game_over_widget.dart';
 
 class MainGame extends StatelessWidget {
   const MainGame({Key? key}) : super(key: key);
@@ -54,16 +56,16 @@ class MainGame extends StatelessWidget {
             forceTileSize: const Size(tileSize, tileSize),
             objectsBuilder: {
               'player_spawner': (properties) {
-                return Spawner();
+                return Spawner(context.read<GameCubit>());
               },
               'player': (properties) {
                 return Spawn(position: properties.position);
               },
+              'enemy_spawner': (properties) {
+                return EnemySpawner(context.read<GameCubit>());
+              },
               'enemy': (properties) {
-                return EnemyBug.createEnemy(
-                  type: ButType.values[properties.others['type']],
-                  position: properties.position,
-                );
+                return EnemySpawn(position: properties.position);
               },
               'gun': (properties) {
                 return Gun(position: properties.position);
@@ -105,6 +107,9 @@ class MainGame extends StatelessWidget {
           builder: (context, state) {
             if (state is GameOver) {
               return const GameOverWidget();
+            }
+            if (state is LifeLost) {
+              return const DieWidget();
             }
             return const Offstage();
           },

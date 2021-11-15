@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:bonfire/bonfire.dart';
 import 'package:flame_audio/flame_audio.dart';
 
+import '../player/bugman_player.dart';
 import '../utils.dart';
 import 'grasshopper.dart';
 import 'home_base.dart';
@@ -74,7 +75,11 @@ abstract class EnemyBug extends SimpleEnemy
 
   @override
   void onContact(GameComponent component) {
-    if (component is Player) {
+    if (shouldRemove) return;
+    if (component is BugmanPlayer) {
+      gameRef.enemies().forEach((enemy) {
+        enemy.removeFromParent();
+      });
       component.die();
     }
   }

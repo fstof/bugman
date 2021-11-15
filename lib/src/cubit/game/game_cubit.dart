@@ -10,18 +10,42 @@ class GameCubit extends Cubit<GameState> {
   void startGame() async {
     emit(GameMenu());
     await Future.delayed(const Duration(seconds: 0));
-    emit(GameInProgress(score: 0));
+    emit(GameInProgress(score: 0, lives: 3));
   }
 
-  void gameOver() {
+  void retry() async {
+    startGame();
+  }
+
+  void continueGame() async {
+    if (state is LifeLost) {
+      emit(GameInProgress(
+        reset: true,
+        score: (state as LifeLost).score,
+        lives: (state as LifeLost).lives,
+      ));
+    }
+  }
+
+  void playerDied() {
     if (state is GameInProgress) {
-      emit(GameOver(score: (state as GameInProgress).score));
+      if ((state as GameInProgress).lives == 1) {
+        emit(GameOver(score: (state as GameInProgress).score));
+      } else {
+        emit(LifeLost(
+          score: (state as GameInProgress).score,
+          lives: (state as GameInProgress).lives - 1,
+        ));
+      }
     }
   }
 
   void addScore(int score) {
     if (state is GameInProgress) {
-      emit(GameInProgress(score: (state as GameInProgress).score + score));
+      emit(GameInProgress(
+        score: (state as GameInProgress).score + score,
+        lives: (state as GameInProgress).lives,
+      ));
     }
   }
 

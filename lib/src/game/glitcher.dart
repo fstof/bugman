@@ -64,6 +64,7 @@ class Glitcher extends GameComponent {
 
   void _enemyGlitch() {
     var enemies = gameRef.children.whereType<EnemyBug>();
+    if (enemies.isEmpty) return;
     var spawns = gameRef.children.whereType<GlitchSpawn>();
     var randomSpawn = spawns.elementAt(gameRandom.nextInt(spawns.length));
     var randomEnemy = enemies.elementAt(gameRandom.nextInt(enemies.length));

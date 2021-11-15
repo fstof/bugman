@@ -953,6 +953,18 @@
                  "width":0,
                  "x":320.65268949815,
                  "y":48.382506403567
+                }, 
+                {
+                 "ellipse":true,
+                 "height":0,
+                 "id":88,
+                 "name":"enemy_spawner",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":171.58134901812,
+                 "y":-28.4602978844512
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -961,7 +973,7 @@
          "y":0
         }],
  "nextlayerid":5,
- "nextobjectid":88,
+ "nextobjectid":89,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.7.0",

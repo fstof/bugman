@@ -41,10 +41,18 @@ class BugmanPlayer extends SimplePlayer with ObjectCollision {
 
   @override
   void die() {
-    super.die();
-    gameCubit.gameOver();
-    removeFromParent();
+    gameCubit.playerDied();
+    gameRef.enemies().forEach((enemy) {
+      enemy.removeFromParent();
+    });
+    currentGun?.removeFromParent();
+    currentGun = null;
+    previousDirectional = JoystickMoveDirectional.IDLE;
+    nextDirectional = JoystickMoveDirectional.IDLE;
+    joystickChangeDirectional(JoystickDirectionalEvent(directional: JoystickMoveDirectional.IDLE));
+
     FlameAudio.play('bleeps/die.wav');
+    gameRef.pauseEngine();
   }
 
   @override
