@@ -9,7 +9,7 @@ abstract class GlitchState extends Equatable {
 
 class Normal extends GlitchState {}
 
-enum GlitchType { tiles, camera, color }
+enum GlitchType { tiles, camera, color, enemy }
 
 class Glitching extends GlitchState {
   final GlitchType type;

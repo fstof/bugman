@@ -1,6 +1,8 @@
 import 'package:bonfire/bonfire.dart';
 
 import '../cubit/glitch/glitch_cubit.dart';
+import 'enemy/enemy_bug.dart';
+import 'enemy/glitch_spawn.dart';
 import 'utils.dart';
 
 class Glitcher extends GameComponent {
@@ -20,6 +22,9 @@ class Glitcher extends GameComponent {
             break;
           case GlitchType.tiles:
             _tileGlitch();
+            break;
+          case GlitchType.enemy:
+            _enemyGlitch();
             break;
           default:
             break;
@@ -55,5 +60,15 @@ class Glitcher extends GameComponent {
         element.angle = dToR(1);
       }
     }
+  }
+
+  void _enemyGlitch() {
+    var enemies = gameRef.children.whereType<EnemyBug>();
+    var spawns = gameRef.children.whereType<GlitchSpawn>();
+    var randomSpawn = spawns.elementAt(gameRandom.nextInt(spawns.length));
+    var randomEnemy = enemies.elementAt(gameRandom.nextInt(enemies.length));
+    randomEnemy.position = randomEnemy.position.copyWith(
+      position: randomSpawn.position.position - randomEnemy.position.size / 2,
+    );
   }
 }

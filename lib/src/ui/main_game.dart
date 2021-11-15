@@ -10,6 +10,7 @@ import '../cubit/game/game_cubit.dart';
 import '../cubit/glitch/glitch_cubit.dart';
 import '../game/bugman_joystick.dart';
 import '../game/enemy/enemy_bug.dart';
+import '../game/enemy/glitch_spawn.dart';
 import '../game/enemy/home_base.dart';
 import '../game/glitcher.dart';
 import '../game/hud/hud.dart';
@@ -78,6 +79,9 @@ class MainGame extends StatelessWidget {
               },
               'glitcher': (properties) {
                 return Glitcher(context.read<GlitchCubit>());
+              },
+              'glitch_spawn': (properties) {
+                return GlitchSpawn(properties.position, properties.size);
               },
             },
           ),
