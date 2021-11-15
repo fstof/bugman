@@ -7,7 +7,7 @@ import '../../cubit/game/game_cubit.dart';
 import '../pickups/gun.dart';
 import '../utils.dart';
 
-class DummyPlayer extends SimplePlayer with ObjectCollision {
+class BugmanPlayer extends SimplePlayer with ObjectCollision {
   final GameCubit gameCubit;
   Timer? shootTimer;
   Gun? currentGun;
@@ -15,7 +15,7 @@ class DummyPlayer extends SimplePlayer with ObjectCollision {
   JoystickMoveDirectional nextDirectional = JoystickMoveDirectional.IDLE;
   final double collisionTestOffset = 15;
 
-  DummyPlayer({required this.gameCubit})
+  BugmanPlayer({required this.gameCubit})
       : super(
           position: Vector2.zero(),
           width: tileSize,
@@ -78,8 +78,7 @@ class DummyPlayer extends SimplePlayer with ObjectCollision {
         previousDirectional = event.directional;
         nextDirectional = JoystickMoveDirectional.IDLE;
       } else {
-        currentEvent =
-            JoystickDirectionalEvent(directional: previousDirectional);
+        currentEvent = JoystickDirectionalEvent(directional: previousDirectional);
         nextDirectional = currentDirectional;
       }
     }

@@ -1,7 +1,7 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flame_audio/flame_audio.dart';
 
-import '../player/dummy_player.dart';
+import '../player/bugman_player.dart';
 import '../utils.dart';
 import 'bullet.dart';
 
@@ -37,7 +37,7 @@ class Gun extends GameDecoration with Sensor {
   @override
   void onContact(GameComponent component) {
     if (used) return;
-    if (component is DummyPlayer) {
+    if (component is BugmanPlayer) {
       _pickUp();
       component.getGun(this);
       component.addScore(50);

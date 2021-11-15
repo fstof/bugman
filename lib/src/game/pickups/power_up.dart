@@ -1,6 +1,6 @@
 import 'package:bonfire/bonfire.dart';
 
-import '../player/dummy_player.dart';
+import '../player/bugman_player.dart';
 import '../utils.dart';
 
 class PowerUp extends GameDecoration with Sensor {
@@ -21,7 +21,7 @@ class PowerUp extends GameDecoration with Sensor {
 
   @override
   void onContact(GameComponent component) {
-    if (component is DummyPlayer) {
+    if (component is BugmanPlayer) {
       if (component.currentGun != null) {
         component.addScore(100);
         component.powerup();
@@ -29,16 +29,6 @@ class PowerUp extends GameDecoration with Sensor {
       removeFromParent();
     }
   }
-
-  // @override
-  // render(Canvas canvas) {
-  //   super.render(canvas);
-  //   canvas.drawCircle(
-  //     position.center,
-  //     10,
-  //     Paint()..color = const Color(0xffff00ff),
-  //   );
-  // }
 }
 
 class _SpriteSheet {

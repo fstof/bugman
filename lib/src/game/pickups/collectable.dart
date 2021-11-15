@@ -1,7 +1,7 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flame_audio/flame_audio.dart';
 
-import '../player/dummy_player.dart';
+import '../player/bugman_player.dart';
 import '../utils.dart';
 
 class Collectable extends GameDecoration with Sensor {
@@ -25,7 +25,7 @@ class Collectable extends GameDecoration with Sensor {
 
   @override
   void onContact(GameComponent component) {
-    if (component is DummyPlayer) {
+    if (component is BugmanPlayer) {
       component.addScore(10);
       removeFromParent();
       FlameAudio.play('bleeps/collect.wav');

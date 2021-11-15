@@ -17,7 +17,7 @@ import '../game/hud/hud.dart';
 import '../game/pickups/collectable.dart';
 import '../game/pickups/gun.dart';
 import '../game/pickups/power_up.dart';
-import '../game/player/dummy_player.dart';
+import '../game/player/bugman_player.dart';
 import '../game/player/spawn.dart';
 import '../game/utils.dart';
 import 'game_over.dart';
@@ -38,7 +38,7 @@ class MainGame extends StatelessWidget {
       children: [
         BonfireTiledWidget(
           joystick: BugmanJoystick(),
-          player: DummyPlayer(gameCubit: context.read<GameCubit>()),
+          player: BugmanPlayer(gameCubit: context.read<GameCubit>()),
           // showCollisionArea: true,
           cameraConfig: CameraConfig(
             moveOnlyMapArea: true,
