@@ -12,6 +12,7 @@ class DummyPlayer extends SimplePlayer with ObjectCollision {
   Timer? shootTimer;
   Gun? currentGun;
   JoystickMoveDirectional previousDirectional = JoystickMoveDirectional.IDLE;
+  JoystickMoveDirectional nextDirectional = JoystickMoveDirectional.IDLE;
   final double collisionTestOffset = 15;
 
   DummyPlayer({required this.gameCubit})
@@ -60,6 +61,11 @@ class DummyPlayer extends SimplePlayer with ObjectCollision {
         currentGun = null;
       }
     }
+
+    if (nextDirectional != JoystickMoveDirectional.IDLE) {
+      var newEvent = JoystickDirectionalEvent(directional: nextDirectional);
+      joystickChangeDirectional(newEvent);
+    }
   }
 
   @override
@@ -68,28 +74,35 @@ class DummyPlayer extends SimplePlayer with ObjectCollision {
     var currentEvent = event;
     if (currentDirectional != previousDirectional &&
         currentDirectional != JoystickMoveDirectional.IDLE) {
-      double x = 0;
-      double y = 0;
-      if (currentDirectional == JoystickMoveDirectional.MOVE_UP) {
-        y = collisionTestOffset * -1;
-      } else if (currentDirectional == JoystickMoveDirectional.MOVE_DOWN) {
-        y = collisionTestOffset;
-      } else if (currentDirectional == JoystickMoveDirectional.MOVE_LEFT) {
-        x = collisionTestOffset * -1;
-      } else if (currentDirectional == JoystickMoveDirectional.MOVE_RIGHT) {
-        x = collisionTestOffset;
-      }
-
-      if (isCollision(
-          displacement: Vector2(position.position.x + x, position.position.y + y),
-          shouldTriggerSensors: false)) {
-        currentEvent = JoystickDirectionalEvent(directional: previousDirectional);
-      } else {
+      if (canGo(currentDirectional)) {
         previousDirectional = event.directional;
+        nextDirectional = JoystickMoveDirectional.IDLE;
+      } else {
+        currentEvent =
+            JoystickDirectionalEvent(directional: previousDirectional);
+        nextDirectional = currentDirectional;
       }
     }
     super.joystickChangeDirectional(currentEvent);
     currentGun?.direction = currentEvent.directional;
+  }
+
+  bool canGo(JoystickMoveDirectional direction) {
+    double x = 0;
+    double y = 0;
+    if (direction == JoystickMoveDirectional.MOVE_UP) {
+      y = collisionTestOffset * -1;
+    } else if (direction == JoystickMoveDirectional.MOVE_DOWN) {
+      y = collisionTestOffset;
+    } else if (direction == JoystickMoveDirectional.MOVE_LEFT) {
+      x = collisionTestOffset * -1;
+    } else if (direction == JoystickMoveDirectional.MOVE_RIGHT) {
+      x = collisionTestOffset;
+    }
+
+    return !isCollision(
+        displacement: Vector2(position.position.x + x, position.position.y + y),
+        shouldTriggerSensors: false);
   }
 
   @override
