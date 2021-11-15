@@ -91,7 +91,8 @@ class MainGame extends StatelessWidget {
             if (state is Glitching && state.type == GlitchType.color) {
               return Positioned.fill(
                 child: BackdropFilter(
-                  filter: const ColorFilter.matrix(invertColorMatrix),
+                  // filter: const ColorFilter.matrix(invertColorMatrix),
+                  filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
                   child: Container(color: Colors.black.withOpacity(0.0)),
                 ),
               );
