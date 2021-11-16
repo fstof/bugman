@@ -19,39 +19,39 @@ class Grasshopper extends EnemyBug {
 
 class _SpriteSheet {
   static Future<SpriteAnimation> get idleLeft => SpriteAnimation.load(
-        "enemy/Crab Sprite Sheet.png",
+        "enemy/grasshopper.png",
         SpriteAnimationData.sequenced(
-          amount: 4,
+          amount: 1,
           stepTime: 0.1,
           textureSize: Vector2(32, 32),
-          texturePosition: Vector2(0, 0),
+          texturePosition: Vector2(0, 32),
         ),
       );
   static Future<SpriteAnimation> get idleRight => SpriteAnimation.load(
-        "enemy/Crab Sprite Sheet.png",
+        "enemy/grasshopper.png",
         SpriteAnimationData.sequenced(
-          amount: 4,
+          amount: 1,
           stepTime: 0.1,
           textureSize: Vector2(32, 32),
           texturePosition: Vector2(0, 0),
         ),
       );
   static Future<SpriteAnimation> get runLeft => SpriteAnimation.load(
-        "enemy/Crab Sprite Sheet.png",
+        "enemy/grasshopper.png",
         SpriteAnimationData.sequenced(
-          amount: 4,
+          amount: 5,
           stepTime: 0.1,
           textureSize: Vector2(32, 32),
           texturePosition: Vector2(0, 32),
         ),
       );
   static Future<SpriteAnimation> get runRight => SpriteAnimation.load(
-        "enemy/Crab Sprite Sheet.png",
+        "enemy/grasshopper.png",
         SpriteAnimationData.sequenced(
-          amount: 4,
+          amount: 5,
           stepTime: 0.1,
           textureSize: Vector2(32, 32),
-          texturePosition: Vector2(0, 32),
+          texturePosition: Vector2(0, 0),
         ),
       );
 }
