@@ -1,10 +1,33 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../cubit/game/game_cubit.dart';
 
-class DieWidget extends StatelessWidget {
+class DieWidget extends StatefulWidget {
   const DieWidget({Key? key}) : super(key: key);
+
+  @override
+  State<DieWidget> createState() => _DieWidgetState();
+}
+
+class _DieWidgetState extends State<DieWidget> {
+  int timeLeft = 5;
+
+  @override
+  void initState() {
+    super.initState();
+    Timer.periodic(const Duration(seconds: 1), (_) {
+      if (!mounted) return;
+      setState(() {
+        timeLeft--;
+        if (timeLeft == -1) {
+          context.read<GameCubit>().continueGame();
+        }
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,12 +38,7 @@ class DieWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text('Bummer', style: Theme.of(context).textTheme.headline1),
-            OutlinedButton(
-              onPressed: () {
-                context.read<GameCubit>().continueGame();
-              },
-              child: Text('GO!', style: Theme.of(context).textTheme.headline2),
-            ),
+            Text('$timeLeft', style: Theme.of(context).textTheme.headline1),
           ],
         ),
       ),
