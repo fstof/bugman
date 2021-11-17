@@ -19,7 +19,7 @@ class Moth extends EnemyBug {
 
 class _SpriteSheet {
   static Future<SpriteAnimation> get idleLeft => SpriteAnimation.load(
-        "enemy/Cat Sprite Sheet.png",
+        "enemy/CatSpriteSheet.png",
         SpriteAnimationData.sequenced(
           amount: 4,
           stepTime: 0.1,
@@ -28,7 +28,7 @@ class _SpriteSheet {
         ),
       );
   static Future<SpriteAnimation> get idleRight => SpriteAnimation.load(
-        "enemy/Cat Sprite Sheet.png",
+        "enemy/CatSpriteSheet.png",
         SpriteAnimationData.sequenced(
           amount: 4,
           stepTime: 0.1,
@@ -37,7 +37,7 @@ class _SpriteSheet {
         ),
       );
   static Future<SpriteAnimation> get runLeft => SpriteAnimation.load(
-        "enemy/Cat Sprite Sheet.png",
+        "enemy/CatSpriteSheet.png",
         SpriteAnimationData.sequenced(
           amount: 8,
           stepTime: 0.1,
@@ -46,7 +46,7 @@ class _SpriteSheet {
         ),
       );
   static Future<SpriteAnimation> get runRight => SpriteAnimation.load(
-        "enemy/Cat Sprite Sheet.png",
+        "enemy/CatSpriteSheet.png",
         SpriteAnimationData.sequenced(
           amount: 8,
           stepTime: 0.1,
