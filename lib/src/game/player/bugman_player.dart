@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:bonfire/bonfire.dart';
 import 'package:flame_audio/flame_audio.dart';
+import 'package:flutter/widgets.dart';
 
 import '../../cubit/game/game_cubit.dart';
 import '../pickups/gun.dart';
@@ -9,7 +10,6 @@ import '../utils.dart';
 
 class BugmanPlayer extends SimplePlayer with ObjectCollision {
   final GameCubit gameCubit;
-  Timer? shootTimer;
   Gun? currentGun;
   JoystickMoveDirectional previousDirectional = JoystickMoveDirectional.IDLE;
   JoystickMoveDirectional nextDirectional = JoystickMoveDirectional.IDLE;
@@ -58,14 +58,13 @@ class BugmanPlayer extends SimplePlayer with ObjectCollision {
   @override
   void update(double dt) {
     super.update(dt);
-    shootTimer?.update(dt);
 
     if (currentGun != null) {
       currentGun!.position = Vector2Rect(
         position.position,
         currentGun!.position.size,
       );
-      if (currentGun!.timeToLive!.finished) {
+      if (currentGun!.empty) {
         currentGun = null;
       }
     }
@@ -74,6 +73,12 @@ class BugmanPlayer extends SimplePlayer with ObjectCollision {
       var newEvent = JoystickDirectionalEvent(directional: nextDirectional);
       joystickChangeDirectional(newEvent);
     }
+  }
+
+  @override
+  void joystickAction(JoystickActionEvent event) {
+    super.joystickAction(event);
+    currentGun?.shoot();
   }
 
   @override
@@ -126,18 +131,10 @@ class BugmanPlayer extends SimplePlayer with ObjectCollision {
   void getGun(Gun gun) {
     FlameAudio.play('bleeps/get-can.wav');
     currentGun = gun;
-    shootTimer = Timer(
-      1,
-      repeat: true,
-      callback: () {
-        currentGun?.shoot();
-      },
-    )..start();
   }
 
   void removeGun() {
     currentGun = null;
-    shootTimer = null;
   }
 
   void powerup() {

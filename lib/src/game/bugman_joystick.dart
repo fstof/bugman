@@ -8,6 +8,7 @@ class BugmanJoystick extends Joystick {
     LogicalKeyboardKey.arrowLeft: JoystickMoveDirectional.MOVE_LEFT,
     LogicalKeyboardKey.arrowRight: JoystickMoveDirectional.MOVE_RIGHT,
   };
+
   BugmanJoystick();
 
   @override
@@ -22,6 +23,8 @@ class BugmanJoystick extends Joystick {
           radAngle: 0.0,
         ));
       }
+    } else if (event is RawKeyDownEvent && event.logicalKey == LogicalKeyboardKey.space) {
+      joystickAction(JoystickActionEvent(event: ActionEvent.DOWN));
     }
   }
 }

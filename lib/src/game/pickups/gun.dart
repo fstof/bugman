@@ -5,9 +5,11 @@ import '../player/bugman_player.dart';
 import '../utils.dart';
 import 'bullet.dart';
 
+const _powerUpTime = 5.0;
+
 class Gun extends GameDecoration with Sensor {
-  Timer? timeToLive;
   Timer? powerUpTimer;
+  int _ammo = 3;
   var used = false;
   var totalTime = 30.0;
   var _powerUp = false;
@@ -50,19 +52,12 @@ class Gun extends GameDecoration with Sensor {
   void update(double dt) {
     super.update(dt);
     powerUpTimer?.update(dt);
-    timeToLive?.update(dt);
-    if (currentBullet != null) {
-      // currentBullet!.position = currentBullet!.position.copyWith(position: _bulletPosition);
-      // currentBullet!.angle = _bulletAngle;
+    if (_ammo <= 0) {
+      removeFromParent();
     }
   }
 
   void _pickUp() {
-    timeToLive = Timer(totalTime, callback: () {
-      removeFromParent();
-    })
-      ..start();
-
     used = true;
   }
 
@@ -172,6 +167,7 @@ class Gun extends GameDecoration with Sensor {
 
   void shoot() {
     FlameAudio.play('bleeps/spray.wav');
+    _ammo--;
     gameRef.add(currentBullet = Bullet(
       position: _bulletPosition,
       size: bulletSized[_powerUp]!,
@@ -184,11 +180,18 @@ class Gun extends GameDecoration with Sensor {
     ));
   }
 
+  int get ammo => _ammo;
+  bool get empty => _ammo <= 0;
+  int get powerUpTimeLeft =>
+      powerUpTimer == null ? 0 : (_powerUpTime - (powerUpTimer?.current ?? 0)).toInt();
+
   set powerUp(bool value) {
     _powerUp = value;
+    _ammo += 3;
     if (value) {
-      powerUpTimer = Timer(5, callback: () {
+      powerUpTimer = Timer(_powerUpTime, callback: () {
         _powerUp = false;
+        powerUpTimer = null;
       })
         ..start();
     }
