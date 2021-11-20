@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -65,6 +67,15 @@ class GameCubit extends Cubit<GameState> {
     }
   }
 
+  void setCollectableCount(int count) {
+    if (state is GameInProgress) {
+      emit(GameInProgress(
+          score: (state as GameInProgress).score,
+          lives: (state as GameInProgress).lives,
+          collectableCount: count));
+    }
+  }
+
   void incCollecatbleCount() {
     if (state is GameInProgress) {
       emit(GameInProgress(
@@ -76,7 +87,9 @@ class GameCubit extends Cubit<GameState> {
 
   void decCollectableCount() {
     if (state is GameInProgress) {
-      if ((state as GameInProgress).collectableCount == 1) {
+      var ct = (state as GameInProgress).collectableCount;
+      //log('collectableCount count $ct');
+      if ((state as GameInProgress).collectableCount <= 1) {
         emit(LevelComplete(
             score: (state as GameInProgress).score,
             lives: (state as GameInProgress).lives,
