@@ -23,6 +23,7 @@ class GameOverWidget extends StatelessWidget {
                 OutlinedButton(
                   onPressed: () {
                     context.read<GameCubit>().retry();
+                    Navigator.of(context).pushReplacementNamed('/game');
                   },
                   child: Text('Retry', style: Theme.of(context).textTheme.headline2),
                 ),
@@ -30,6 +31,7 @@ class GameOverWidget extends StatelessWidget {
                 OutlinedButton(
                   onPressed: () {
                     context.read<GameCubit>().quit();
+                    Navigator.of(context).pop();
                   },
                   child: Text('Quit', style: Theme.of(context).textTheme.headline2),
                 ),

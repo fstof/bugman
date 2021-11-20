@@ -48,17 +48,10 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         title: 'Bugman',
         theme: themeData,
-        home: BlocBuilder<GameCubit, GameState>(
-          builder: (context, state) {
-            if (state is GameInProgress) {
-              return const MainGame();
-            } else {
-              return MainMenu(onPlay: () {
-                context.read<GameCubit>().startGame();
-              });
-            }
-          },
-        ),
+        routes: {
+          '/': (context) => const MainMenu(),
+          '/game': (context) => const MainGame(),
+        },
       ),
     );
   }

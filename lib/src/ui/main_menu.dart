@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../cubit/game/game_cubit.dart';
 
 class MainMenu extends StatelessWidget {
-  final VoidCallback onPlay;
-  const MainMenu({Key? key, required this.onPlay}) : super(key: key);
+  const MainMenu({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,10 @@ class MainMenu extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     OutlinedButton(
-                      onPressed: onPlay,
+                      onPressed: () {
+                        context.read<GameCubit>().startGame();
+                        Navigator.pushNamed(context, '/game');
+                      },
                       child: Text('Play', style: Theme.of(context).textTheme.headline2),
                     ),
                     const SizedBox(width: 8),
