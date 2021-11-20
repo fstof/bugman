@@ -74,10 +74,13 @@ class MainGame extends StatelessWidget {
                 return PowerUp(position: properties.position);
               },
               'home': (properties) {
-                return HomeBase(position: properties.position, size: properties.size);
+                return HomeBase(
+                    position: properties.position, size: properties.size);
               },
               'collect': (properties) {
-                return Collectable(position: properties.position);
+                return Collectable(
+                    position: properties.position,
+                    gameCubit: context.read<GameCubit>());
               },
               'glitcher': (properties) {
                 return Glitcher(context.read<GlitchCubit>());
@@ -103,7 +106,14 @@ class MainGame extends StatelessWidget {
             }
           },
         ),
-        BlocBuilder<GameCubit, GameState>(
+        BlocConsumer<GameCubit, GameState>(
+          listener: (context, state) {
+            if (state is LevelComplete) {
+              context.read<GameCubit>().continueGame();
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => const MainGame()));
+            }
+          },
           builder: (context, state) {
             if (state is GameOver) {
               return const GameOverWidget();

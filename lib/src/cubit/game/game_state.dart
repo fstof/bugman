@@ -12,26 +12,31 @@ class GameInProgress extends GameState {
   final bool reset;
   final int score;
   final int lives;
+  final int collectableCount;
 
-  GameInProgress({
-    this.reset = false,
-    required this.score,
-    required this.lives,
-  });
+  GameInProgress(
+      {this.reset = false,
+      required this.score,
+      required this.lives,
+      required this.collectableCount});
 
   @override
-  List<Object?> get props => [reset, score, lives];
+  List<Object?> get props => [reset, score, lives, collectableCount];
 }
 
 class LifeLost extends GameInProgress {
-  LifeLost({
-    required int score,
-    required int lives,
-  }) : super(score: score, lives: lives);
+  LifeLost(
+      {required int score, required int lives, required int collectableCount})
+      : super(score: score, lives: lives, collectableCount: collectableCount);
+}
+
+class LevelComplete extends GameInProgress {
+  LevelComplete(
+      {required int score, required int lives, required int collectableCount})
+      : super(score: score, lives: lives, collectableCount: collectableCount);
 }
 
 class GameOver extends GameInProgress {
-  GameOver({
-    required int score,
-  }) : super(score: score, lives: 0);
+  GameOver({required int score, required int collectableCount})
+      : super(score: score, lives: 0, collectableCount: collectableCount);
 }
