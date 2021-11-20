@@ -71,7 +71,8 @@ flutter:
   assets:
     - assets/
     - assets/google_fonts/
-    - assets/audio//bleeps/
+    - assets/audio/bleeps/
+    - assets/audio/music/
     - assets/images/
     - assets/images/maps/
     - assets/images/player/

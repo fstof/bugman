@@ -25,14 +25,12 @@ class GameInProgress extends GameState {
 }
 
 class LifeLost extends GameInProgress {
-  LifeLost(
-      {required int score, required int lives, required int collectableCount})
+  LifeLost({required int score, required int lives, required int collectableCount})
       : super(score: score, lives: lives, collectableCount: collectableCount);
 }
 
 class LevelComplete extends GameInProgress {
-  LevelComplete(
-      {required int score, required int lives, required int collectableCount})
+  LevelComplete({required int score, required int lives, required int collectableCount})
       : super(score: score, lives: lives, collectableCount: collectableCount);
 }
 

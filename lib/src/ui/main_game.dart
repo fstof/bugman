@@ -3,17 +3,15 @@ import 'dart:ui';
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire/camera/camera_config.dart';
 import 'package:bonfire/tiled/tiled_world_map.dart';
-import 'package:bugman/src/ui/die_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../cubit/game/game_cubit.dart';
 import '../cubit/glitch/glitch_cubit.dart';
 import '../game/bugman_joystick.dart';
-import '../game/enemy/enemy_bug.dart';
+import '../game/enemy/enemy_spawn.dart';
 import '../game/enemy/glitch_spawn.dart';
 import '../game/enemy/home_base.dart';
-import '../game/enemy/enemy_spawn.dart';
 import '../game/glitcher.dart';
 import '../game/hud/hud.dart';
 import '../game/pickups/collectable.dart';
@@ -22,6 +20,7 @@ import '../game/pickups/power_up.dart';
 import '../game/player/bugman_player.dart';
 import '../game/player/spawn.dart';
 import '../game/utils.dart';
+import 'die_widget.dart';
 import 'game_over_widget.dart';
 
 class MainGame extends StatelessWidget {
@@ -48,6 +47,7 @@ class MainGame extends StatelessWidget {
           ),
           onReady: (game) {
             context.read<GlitchCubit>().start();
+            context.read<GameCubit>().levelStarted();
           },
           interface: Hud(context.read<GameCubit>()),
           map: TiledWorldMap(
@@ -75,12 +75,15 @@ class MainGame extends StatelessWidget {
               },
               'home': (properties) {
                 return HomeBase(
-                    position: properties.position, size: properties.size);
+                  position: properties.position,
+                  size: properties.size,
+                );
               },
               'collect': (properties) {
                 return Collectable(
-                    position: properties.position,
-                    gameCubit: context.read<GameCubit>());
+                  position: properties.position,
+                  gameCubit: context.read<GameCubit>(),
+                );
               },
               'glitcher': (properties) {
                 return Glitcher(context.read<GlitchCubit>());
@@ -110,8 +113,8 @@ class MainGame extends StatelessWidget {
           listener: (context, state) {
             if (state is LevelComplete) {
               context.read<GameCubit>().continueGame();
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => const MainGame()));
+              Navigator.of(context)
+                  .pushReplacement(MaterialPageRoute(builder: (context) => const MainGame()));
             }
           },
           builder: (context, state) {
