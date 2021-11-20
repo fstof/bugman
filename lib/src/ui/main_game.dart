@@ -48,6 +48,8 @@ class MainGame extends StatelessWidget {
           onReady: (game) {
             context.read<GlitchCubit>().start();
             context.read<GameCubit>().levelStarted();
+            //var ct = game.children.whereType<Collectable>().length;
+            //context.read<GameCubit>().setCollectableCount(ct);
           },
           interface: Hud(context.read<GameCubit>()),
           map: TiledWorldMap(
@@ -113,8 +115,8 @@ class MainGame extends StatelessWidget {
           listener: (context, state) {
             if (state is LevelComplete) {
               context.read<GameCubit>().continueGame();
-              Navigator.of(context)
-                  .pushReplacement(MaterialPageRoute(builder: (context) => const MainGame()));
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => const MainGame()));
             }
           },
           builder: (context, state) {
