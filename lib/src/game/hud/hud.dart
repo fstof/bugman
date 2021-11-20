@@ -44,6 +44,7 @@ class Hud extends GameInterface {
     super.render(canvas);
     _drawScore(canvas);
     _drawLives(canvas);
+    _drawLevel(canvas);
     _drawAmmo(canvas);
     _drawPowerup(canvas);
   }
@@ -98,7 +99,9 @@ class Hud extends GameInterface {
 
   void _drawAmmo(Canvas canvas) {
     sprayCan?.renderRect(
-        canvas, Rect.fromLTWH(position.right - 85, position.bottom - 43, tileSize, tileSize));
+        canvas,
+        Rect.fromLTWH(
+            position.right - 85, position.bottom - 43, tileSize, tileSize));
 
     final textStyle = Theme.of(context).textTheme.headline4!.copyWith(
           color: Theme.of(context).colorScheme.primary,
@@ -124,12 +127,15 @@ class Hud extends GameInterface {
 
   void _drawPowerup(Canvas canvas) {
     powerUp?.renderRect(
-        canvas, Rect.fromLTWH(position.right - 200, position.bottom - 43, tileSize, tileSize));
+        canvas,
+        Rect.fromLTWH(
+            position.right - 200, position.bottom - 43, tileSize, tileSize));
 
     final textStyle = Theme.of(context).textTheme.headline4!.copyWith(
           color: Theme.of(context).colorScheme.primary,
         );
-    var text = '= ${(gameRef.player as BugmanPlayer).currentGun?.powerUpTimeLeft ?? 0}';
+    var text =
+        '= ${(gameRef.player as BugmanPlayer).currentGun?.powerUpTimeLeft ?? 0}';
     final textSpan = TextSpan(
       text: text,
       style: textStyle,
@@ -145,6 +151,28 @@ class Hud extends GameInterface {
     textPainter.paint(
       canvas,
       Offset(position.right - 165, position.bottom - 50),
+    );
+  }
+
+  void _drawLevel(Canvas canvas) {
+    final textStyle = Theme.of(context).textTheme.headline4!.copyWith(
+          color: Theme.of(context).colorScheme.primary,
+        );
+    final textSpan = TextSpan(
+      text: 'Level: ${gameState?.level}',
+      style: textStyle,
+    );
+    final textPainter = TextPainter(
+      text: textSpan,
+      textDirection: TextDirection.ltr,
+    );
+    textPainter.layout(
+      minWidth: 100,
+      maxWidth: 1000,
+    );
+    textPainter.paint(
+      canvas,
+      Offset(position.right - 200, position.top),
     );
   }
 }

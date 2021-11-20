@@ -16,7 +16,7 @@ class GameCubit extends Cubit<GameState> {
   void startGame() async {
     emit(GameMenu());
     await Future.delayed(const Duration(seconds: 0));
-    emit(GameInProgress(score: 0, lives: 3, collectableCount: 0));
+    emit(GameInProgress(score: 0, lives: 3, collectableCount: 0, level: 1));
   }
 
   void retry() async {
@@ -31,13 +31,15 @@ class GameCubit extends Cubit<GameState> {
           reset: true,
           score: (state as LifeLost).score,
           lives: (state as LifeLost).lives,
-          collectableCount: (state as LifeLost).collectableCount));
+          collectableCount: (state as LifeLost).collectableCount,
+          level: (state as LifeLost).level));
     } else if (state is LevelComplete) {
       emit(GameInProgress(
           reset: false,
           score: (state as LevelComplete).score,
           lives: (state as LevelComplete).lives,
-          collectableCount: (state as LevelComplete).collectableCount));
+          collectableCount: (state as LevelComplete).collectableCount,
+          level: (state as LevelComplete).level));
     }
   }
 
@@ -48,12 +50,14 @@ class GameCubit extends Cubit<GameState> {
       if ((state as GameInProgress).lives == 1) {
         emit(GameOver(
             score: (state as GameInProgress).score,
-            collectableCount: (state as GameInProgress).collectableCount));
+            collectableCount: (state as GameInProgress).collectableCount,
+            level: (state as GameInProgress).level));
       } else {
         emit(LifeLost(
             score: (state as GameInProgress).score,
             lives: (state as GameInProgress).lives - 1,
-            collectableCount: (state as GameInProgress).collectableCount));
+            collectableCount: (state as GameInProgress).collectableCount,
+            level: (state as GameInProgress).level));
       }
     }
   }
@@ -63,7 +67,8 @@ class GameCubit extends Cubit<GameState> {
       emit(GameInProgress(
           score: (state as GameInProgress).score + score,
           lives: (state as GameInProgress).lives,
-          collectableCount: (state as GameInProgress).collectableCount));
+          collectableCount: (state as GameInProgress).collectableCount,
+          level: (state as GameInProgress).level));
     }
   }
 
@@ -72,7 +77,8 @@ class GameCubit extends Cubit<GameState> {
       emit(GameInProgress(
           score: (state as GameInProgress).score,
           lives: (state as GameInProgress).lives,
-          collectableCount: count));
+          collectableCount: count,
+          level: (state as GameInProgress).level));
     }
   }
 
@@ -81,7 +87,8 @@ class GameCubit extends Cubit<GameState> {
       emit(GameInProgress(
           score: (state as GameInProgress).score,
           lives: (state as GameInProgress).lives,
-          collectableCount: (state as GameInProgress).collectableCount + 1));
+          collectableCount: (state as GameInProgress).collectableCount + 1,
+          level: (state as GameInProgress).level));
     }
   }
 
@@ -93,12 +100,14 @@ class GameCubit extends Cubit<GameState> {
         emit(LevelComplete(
             score: (state as GameInProgress).score,
             lives: (state as GameInProgress).lives,
-            collectableCount: (state as GameInProgress).collectableCount - 1));
+            collectableCount: (state as GameInProgress).collectableCount - 1,
+            level: (state as GameInProgress).level + 1));
       } else {
         emit(GameInProgress(
             score: (state as GameInProgress).score,
             lives: (state as GameInProgress).lives,
-            collectableCount: (state as GameInProgress).collectableCount - 1));
+            collectableCount: (state as GameInProgress).collectableCount - 1,
+            level: (state as GameInProgress).level));
       }
     }
   }
