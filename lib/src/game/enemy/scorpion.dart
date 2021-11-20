@@ -19,39 +19,39 @@ class Scorpion extends EnemyBug {
 
 class _SpriteSheet {
   static Future<SpriteAnimation> get idleLeft => SpriteAnimation.load(
-        "enemy/FrogSpriteSheet.png",
+        "enemy/scorpion.png",
         SpriteAnimationData.sequenced(
-          amount: 6,
+          amount: 1,
           stepTime: 0.1,
           textureSize: Vector2(32, 32),
-          texturePosition: Vector2(0, 32),
+          texturePosition: Vector2(0, 0),
         ),
       );
   static Future<SpriteAnimation> get idleRight => SpriteAnimation.load(
-        "enemy/FrogSpriteSheet.png",
+        "enemy/scorpion.png",
         SpriteAnimationData.sequenced(
-          amount: 6,
+          amount: 1,
           stepTime: 0.1,
           textureSize: Vector2(32, 32),
           texturePosition: Vector2(0, 32),
         ),
       );
   static Future<SpriteAnimation> get runLeft => SpriteAnimation.load(
-        "enemy/FrogSpriteSheet.png",
+        "enemy/scorpion.png",
         SpriteAnimationData.sequenced(
           amount: 5,
           stepTime: 0.1,
           textureSize: Vector2(32, 32),
-          texturePosition: Vector2(0, 64),
+          texturePosition: Vector2(0, 0),
         ),
       );
   static Future<SpriteAnimation> get runRight => SpriteAnimation.load(
-        "enemy/FrogSpriteSheet.png",
+        "enemy/scorpion.png",
         SpriteAnimationData.sequenced(
           amount: 5,
           stepTime: 0.1,
           textureSize: Vector2(32, 32),
-          texturePosition: Vector2(0, 64),
+          texturePosition: Vector2(0, 32),
         ),
       );
 }
