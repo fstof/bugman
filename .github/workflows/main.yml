@@ -48,4 +48,4 @@ jobs:
           CHANNEL: html
           ITCH_GAME: bugman
           ITCH_USER: fstof
-          PACKAGE: build/web
+          PACKAGE: web
