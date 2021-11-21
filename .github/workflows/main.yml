@@ -18,18 +18,32 @@ jobs:
         with:
           channel: 'stable'
 
+      - name: Get version numbers
+        run: |
+          BUILD=$GITHUB_RUN_NUMBER
+          echo "BUILD=$BUILD" >> $GITHUB_ENV
+          echo "BUILD=$BUILD" >> version.txt
+          echo "build: $BUILD"
+
       - name: Fetch package dependencies
         run: flutter pub get
 
       - name: Build the bundle
         run: |
-          flutter build web --web-renderer canvaskit --release
+          flutter build web --web-renderer=canvaskit --base-href=/$GITHUB_RUN_NUMBER/ --release
 
       - name: Archive itch.io artifacts
         uses: actions/upload-artifact@v2
         with:
           name: web-archive
           path: build
+
+      - name: Archive version file
+        uses: actions/upload-artifact@v2
+        with:
+          name: version
+          path: version.txt
+
 
   publish_itch:
     name: Publish to itch.io
@@ -41,6 +55,16 @@ jobs:
         with:
           name: web-archive
 
+      - name: Download version file
+        uses: actions/download-artifact@v2
+        with:
+          name: version
+
+      - name: Load version number
+        run: |
+          source version.txt
+          echo "BUILD=$BUILD" >> $GITHUB_ENV
+
       - name: Publish to itch.io
         uses: josephbmanley/butler-publish-itchio-action@master
         env:
@@ -49,3 +73,4 @@ jobs:
           ITCH_GAME: bugman
           ITCH_USER: fstof
           PACKAGE: web
+          VERSION: "${{ env.BUILD }}"
