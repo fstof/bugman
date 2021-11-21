@@ -19,39 +19,39 @@ class Spider extends EnemyBug {
 
 class _SpriteSheet {
   static Future<SpriteAnimation> get idleLeft => SpriteAnimation.load(
-        "enemy/CobraSpriteSheet.png",
+        "enemy/spider.png",
         SpriteAnimationData.sequenced(
-          amount: 8,
+          amount: 2,
           stepTime: 0.1,
           textureSize: Vector2(32, 32),
           texturePosition: Vector2(0, 0),
         ),
       );
   static Future<SpriteAnimation> get idleRight => SpriteAnimation.load(
-        "enemy/CobraSpriteSheet.png",
+        "enemy/spider.png",
         SpriteAnimationData.sequenced(
-          amount: 8,
+          amount: 2,
           stepTime: 0.1,
           textureSize: Vector2(32, 32),
           texturePosition: Vector2(0, 0),
         ),
       );
   static Future<SpriteAnimation> get runLeft => SpriteAnimation.load(
-        "enemy/CobraSpriteSheet.png",
+        "enemy/spider.png",
         SpriteAnimationData.sequenced(
-          amount: 8,
+          amount: 2,
           stepTime: 0.1,
           textureSize: Vector2(32, 32),
-          texturePosition: Vector2(0, 32),
+          texturePosition: Vector2(0, 0),
         ),
       );
   static Future<SpriteAnimation> get runRight => SpriteAnimation.load(
-        "enemy/CobraSpriteSheet.png",
+        "enemy/spider.png",
         SpriteAnimationData.sequenced(
-          amount: 8,
+          amount: 2,
           stepTime: 0.1,
           textureSize: Vector2(32, 32),
-          texturePosition: Vector2(0, 32),
+          texturePosition: Vector2(0, 0),
         ),
       );
 }
