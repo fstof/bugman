@@ -13,45 +13,65 @@ class Moth extends EnemyBug {
             idleRight: _SpriteSheet.idleRight,
             runRight: _SpriteSheet.runRight,
             runLeft: _SpriteSheet.runLeft,
+            runUp: _SpriteSheet.runUp,
+            runDown: _SpriteSheet.runDown,
           ),
         );
 }
 
 class _SpriteSheet {
   static Future<SpriteAnimation> get idleLeft => SpriteAnimation.load(
-        "enemy/CatSpriteSheet.png",
+        "enemy/moth.png",
         SpriteAnimationData.sequenced(
-          amount: 4,
+          amount: 2,
           stepTime: 0.1,
           textureSize: Vector2(32, 32),
           texturePosition: Vector2(0, 0),
         ),
       );
   static Future<SpriteAnimation> get idleRight => SpriteAnimation.load(
-        "enemy/CatSpriteSheet.png",
+        "enemy/moth.png",
         SpriteAnimationData.sequenced(
-          amount: 4,
+          amount: 2,
+          stepTime: 0.1,
+          textureSize: Vector2(32, 32),
+          texturePosition: Vector2(0, 1 * 32),
+        ),
+      );
+  static Future<SpriteAnimation> get runLeft => SpriteAnimation.load(
+        "enemy/moth.png",
+        SpriteAnimationData.sequenced(
+          amount: 2,
           stepTime: 0.1,
           textureSize: Vector2(32, 32),
           texturePosition: Vector2(0, 0),
         ),
       );
-  static Future<SpriteAnimation> get runLeft => SpriteAnimation.load(
-        "enemy/CatSpriteSheet.png",
+  static Future<SpriteAnimation> get runRight => SpriteAnimation.load(
+        "enemy/moth.png",
         SpriteAnimationData.sequenced(
-          amount: 8,
+          amount: 2,
           stepTime: 0.1,
           textureSize: Vector2(32, 32),
-          texturePosition: Vector2(0, 32 * 4),
+          texturePosition: Vector2(0, 1 * 32),
         ),
       );
-  static Future<SpriteAnimation> get runRight => SpriteAnimation.load(
-        "enemy/CatSpriteSheet.png",
+  static Future<SpriteAnimation> get runUp => SpriteAnimation.load(
+        "enemy/moth.png",
         SpriteAnimationData.sequenced(
-          amount: 8,
+          amount: 2,
           stepTime: 0.1,
           textureSize: Vector2(32, 32),
-          texturePosition: Vector2(0, 32 * 4),
+          texturePosition: Vector2(0, 2 * 32),
+        ),
+      );
+  static Future<SpriteAnimation> get runDown => SpriteAnimation.load(
+        "enemy/moth.png",
+        SpriteAnimationData.sequenced(
+          amount: 2,
+          stepTime: 0.1,
+          textureSize: Vector2(32, 32),
+          texturePosition: Vector2(0, 3 * 32),
         ),
       );
 }
