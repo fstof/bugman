@@ -25,16 +25,11 @@ jobs:
         run: |
           flutter build web --web-renderer canvaskit --release
 
-      - uses: papeloto/action-zip@v1
-        with:
-          files: build/web/**
-          dest: web-archive.zip
-
       - name: Archive itch.io artifacts
         uses: actions/upload-artifact@v2
         with:
           name: web-archive
-          path: web-archive.zip
+          path: build/web/**
 
   publish_itch:
     name: Publish apk to itch.io
@@ -53,4 +48,4 @@ jobs:
           CHANNEL: html
           ITCH_GAME: bugman
           ITCH_USER: fstof
-          PACKAGE: "web-archive.zip"
+          PACKAGE: build/web
