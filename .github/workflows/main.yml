@@ -29,10 +29,10 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: web-archive
-          path: build/web/**
+          path: build
 
   publish_itch:
-    name: Publish apk to itch.io
+    name: Publish to itch.io
     needs: build
     runs-on: ubuntu-latest
     steps:
