@@ -1,6 +1,6 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:bugman/src/cubit/game/game_cubit.dart';
-import 'package:bugman/src/game/player/bugman_player.dart';
+
+import '../../cubit/game/game_cubit.dart';
 
 class Spawn extends GameComponent {
   Spawn({required Vector2 position}) {
@@ -12,6 +12,7 @@ class Spawner extends GameComponent {
   final GameCubit _gameCubit;
 
   var playerSpawned = false;
+  var pauseGame = false;
 
   Spawner(this._gameCubit);
 
@@ -22,6 +23,9 @@ class Spawner extends GameComponent {
       if (state is GameInProgress && state.reset) {
         playerSpawned = false;
         gameRef.resumeEngine();
+      }
+      if (state is LevelIntro) {
+        pauseGame = true;
       }
     });
   }
@@ -37,6 +41,14 @@ class Spawner extends GameComponent {
       if (spawnPoint.isNotEmpty && player != null) {
         player.vectorPosition = spawnPoint.first.vectorPosition - player.position.size * 0.5;
         playerSpawned = true;
+      }
+    } else {
+      if (pauseGame) {
+        if ((gameRef.player?.isVisible ?? false) &&
+            gameRef.children.whereType<Enemy>().first.isVisible) {
+          pauseGame = false;
+          gameRef.pauseEngine();
+        }
       }
     }
   }

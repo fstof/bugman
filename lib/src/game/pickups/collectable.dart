@@ -1,7 +1,7 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:bugman/src/cubit/game/game_cubit.dart';
 import 'package:flame_audio/flame_audio.dart';
 
+import '../../cubit/game/game_cubit.dart';
 import '../player/bugman_player.dart';
 import '../utils.dart';
 
@@ -14,8 +14,7 @@ class Collectable extends GameDecoration with Sensor {
           width: tileSize,
         ) {
     setupSensorArea(
-      Vector2Rect(
-          Vector2(tileSize, tileSize) / 4, Vector2(tileSize, tileSize) / 2),
+      Vector2Rect(Vector2(tileSize, tileSize) / 4, Vector2(tileSize, tileSize) / 2),
       intervalCheck: 10,
     );
     gameCubit.incCollecatbleCount();

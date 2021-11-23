@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -13,34 +11,66 @@ class GameCubit extends Cubit<GameState> {
 
   GameCubit() : super(GameMenu());
 
-  void startGame() async {
-    emit(GameMenu());
-    await Future.delayed(const Duration(seconds: 0));
-    emit(GameInProgress(score: 0, lives: 3, collectableCount: 0, level: 1));
+  void levelStarted({int level = 1}) async {
+    _stopMusic();
+    _playIntro();
+    if (level == 1) {
+      emit(LevelIntro(score: 0, lives: 3, collectableCount: 20, level: 1));
+      await Future.delayed(const Duration(seconds: 4));
+      emit(GameInProgress(
+        reset: true,
+        score: (state as GameInProgress).score,
+        lives: (state as GameInProgress).lives,
+        collectableCount: (state as GameInProgress).collectableCount,
+        level: (state as GameInProgress).level,
+      ));
+    } else {
+      emit(LevelIntro(
+        reset: true,
+        score: (state as GameInProgress).score,
+        lives: (state as GameInProgress).lives,
+        collectableCount: 20,
+        level: (state as GameInProgress).level,
+      ));
+      await Future.delayed(const Duration(seconds: 4));
+      emit(GameInProgress(
+        reset: true,
+        score: (state as GameInProgress).score,
+        lives: (state as GameInProgress).lives,
+        collectableCount: (state as GameInProgress).collectableCount,
+        level: (state as GameInProgress).level,
+      ));
+    }
+    _playMusic();
   }
 
   void retry() async {
     _stopMusic();
-    startGame();
+    emit(GameMenu());
   }
 
   void continueGame() async {
-    levelStarted();
+    _stopMusic();
+    _playIntro();
     if (state is LifeLost) {
+      emit(LevelIntro(
+        reset: true,
+        score: (state as GameInProgress).score,
+        lives: (state as GameInProgress).lives,
+        collectableCount: (state as GameInProgress).collectableCount,
+        level: (state as GameInProgress).level,
+      ));
+      await Future.delayed(const Duration(seconds: 4));
+
       emit(GameInProgress(
-          reset: true,
-          score: (state as LifeLost).score,
-          lives: (state as LifeLost).lives,
-          collectableCount: (state as LifeLost).collectableCount,
-          level: (state as LifeLost).level));
-    } else if (state is LevelComplete) {
-      emit(GameInProgress(
-          reset: false,
-          score: (state as LevelComplete).score,
-          lives: (state as LevelComplete).lives,
-          collectableCount: (state as LevelComplete).collectableCount,
-          level: (state as LevelComplete).level));
+        reset: true,
+        score: (state as GameInProgress).score,
+        lives: (state as GameInProgress).lives,
+        collectableCount: (state as GameInProgress).collectableCount,
+        level: (state as GameInProgress).level,
+      ));
     }
+    _playMusic();
   }
 
   void playerDied() {
@@ -49,15 +79,17 @@ class GameCubit extends Cubit<GameState> {
     if (state is GameInProgress) {
       if ((state as GameInProgress).lives == 1) {
         emit(GameOver(
-            score: (state as GameInProgress).score,
-            collectableCount: (state as GameInProgress).collectableCount,
-            level: (state as GameInProgress).level));
+          score: (state as GameInProgress).score,
+          collectableCount: (state as GameInProgress).collectableCount,
+          level: (state as GameInProgress).level,
+        ));
       } else {
         emit(LifeLost(
-            score: (state as GameInProgress).score,
-            lives: (state as GameInProgress).lives - 1,
-            collectableCount: (state as GameInProgress).collectableCount,
-            level: (state as GameInProgress).level));
+          score: (state as GameInProgress).score,
+          lives: (state as GameInProgress).lives - 1,
+          collectableCount: (state as GameInProgress).collectableCount,
+          level: (state as GameInProgress).level,
+        ));
       }
     }
   }
@@ -95,7 +127,7 @@ class GameCubit extends Cubit<GameState> {
   void decCollectableCount() {
     if (state is GameInProgress) {
       var ct = (state as GameInProgress).collectableCount;
-      //log('collectableCount count $ct');
+      // print('collectableCount count $ct');
       if ((state as GameInProgress).collectableCount <= 1) {
         emit(LevelComplete(
             score: (state as GameInProgress).score,
@@ -115,12 +147,6 @@ class GameCubit extends Cubit<GameState> {
   void quit() {
     _stopMusic();
     emit(GameMenu());
-  }
-
-  Future<void> levelStarted() async {
-    _playIntro();
-    await Future.delayed(const Duration(seconds: 4));
-    _playMusic();
   }
 
   Future<void> _playIntro() async {

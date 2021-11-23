@@ -13,7 +13,7 @@ class DieWidget extends StatefulWidget {
 }
 
 class _DieWidgetState extends State<DieWidget> {
-  int timeLeft = 5;
+  int timeLeft = 3;
 
   @override
   void initState() {
@@ -37,8 +37,11 @@ class _DieWidgetState extends State<DieWidget> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text('Bummer', style: Theme.of(context).textTheme.headline1),
-            Text('$timeLeft', style: Theme.of(context).textTheme.headline1),
+            Text(
+              'Bummer\n$timeLeft',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headline1,
+            ),
           ],
         ),
       ),

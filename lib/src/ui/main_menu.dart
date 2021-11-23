@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../cubit/game/game_cubit.dart';
 
 class MainMenu extends StatelessWidget {
   const MainMenu({Key? key}) : super(key: key);
@@ -29,7 +26,6 @@ class MainMenu extends StatelessWidget {
                   children: [
                     OutlinedButton(
                       onPressed: () {
-                        context.read<GameCubit>().startGame();
                         Navigator.pushNamed(context, '/game');
                       },
                       child: Text('Play', style: Theme.of(context).textTheme.headline2),

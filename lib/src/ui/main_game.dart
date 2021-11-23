@@ -22,9 +22,12 @@ import '../game/player/spawn.dart';
 import '../game/utils.dart';
 import 'die_widget.dart';
 import 'game_over_widget.dart';
+import 'new_level_widget.dart';
 
 class MainGame extends StatelessWidget {
-  const MainGame({Key? key}) : super(key: key);
+  final int level;
+
+  const MainGame({Key? key, this.level = 1}) : super(key: key);
 
   static const invertColorMatrix = <double>[
     -1, 0, 0, 0, 255, //
@@ -47,13 +50,12 @@ class MainGame extends StatelessWidget {
           ),
           onReady: (game) {
             context.read<GlitchCubit>().start();
-            context.read<GameCubit>().levelStarted();
-            //var ct = game.children.whereType<Collectable>().length;
-            //context.read<GameCubit>().setCollectableCount(ct);
+            context.read<GameCubit>().levelStarted(level: level);
           },
           interface: Hud(context.read<GameCubit>()),
           map: TiledWorldMap(
-            'maps/map.json',
+            // 'maps/map.json',
+            'maps/test_map.json',
             forceTileSize: const Size(tileSize, tileSize),
             objectsBuilder: {
               'player_spawner': (properties) {
@@ -113,9 +115,13 @@ class MainGame extends StatelessWidget {
         BlocConsumer<GameCubit, GameState>(
           listener: (context, state) {
             if (state is LevelComplete) {
-              context.read<GameCubit>().continueGame();
-              Navigator.of(context)
-                  .pushReplacement(MaterialPageRoute(builder: (context) => const MainGame()));
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => MainGame(
+                    level: state.level,
+                  ),
+                ),
+              );
             }
           },
           builder: (context, state) {
@@ -124,6 +130,9 @@ class MainGame extends StatelessWidget {
             }
             if (state is LifeLost) {
               return const DieWidget();
+            }
+            if (state is LevelIntro) {
+              return const NewLevelWidget();
             }
             return const Offstage();
           },
