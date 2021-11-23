@@ -1,12 +1,14 @@
 import 'package:bonfire/bonfire.dart';
 
 import '../enemy/enemy_bug.dart';
+import '../player/bugman_player.dart';
 import '../utils.dart';
 
 class Bullet extends AnimatedObject with Sensor {
   static const length = tileSize * 3;
 
   Timer? _showTimer;
+  bool used = false;
   Future<SpriteAnimation> animationFuture;
   final Function onAnimationEnd;
 
@@ -26,7 +28,6 @@ class Bullet extends AnimatedObject with Sensor {
   @override
   Future<void>? onLoad() async {
     super.onLoad();
-    // animation = await BulletSpriteSheet.normal;
     animation = await animationFuture;
     _showTimer = Timer(1, callback: () {
       _showTimer = null;
@@ -39,6 +40,10 @@ class Bullet extends AnimatedObject with Sensor {
   void onContact(GameComponent component) {
     if (component is EnemyBug) {
       component.returnToHome();
+      if (!used) {
+        (gameRef.player as BugmanPlayer).addScore(150);
+        used = true;
+      }
     }
   }
 

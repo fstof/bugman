@@ -53,8 +53,7 @@ class MainGame extends StatelessWidget {
           },
           interface: Hud(context.read<GameCubit>()),
           map: TiledWorldMap(
-            // 'maps/map1.json',
-            'maps/simple_map.json',
+            'maps/map.json',
             forceTileSize: const Size(tileSize, tileSize),
             objectsBuilder: {
               'player_spawner': (properties) {
@@ -115,8 +114,8 @@ class MainGame extends StatelessWidget {
           listener: (context, state) {
             if (state is LevelComplete) {
               context.read<GameCubit>().continueGame();
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => const MainGame()));
+              Navigator.of(context)
+                  .pushReplacement(MaterialPageRoute(builder: (context) => const MainGame()));
             }
           },
           builder: (context, state) {

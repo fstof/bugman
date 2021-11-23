@@ -1,7 +1,9 @@
 import 'dart:ui';
 
 import 'package:bonfire/bonfire.dart';
+import 'package:bugman/src/cubit/game/game_cubit.dart';
 import 'package:flame_audio/flame_audio.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../player/bugman_player.dart';
 import '../utils.dart';
@@ -64,6 +66,12 @@ abstract class EnemyBug extends SimpleEnemy
   @override
   Future<void> onLoad() async {
     super.onLoad();
+
+    final gameState = context.read<GameCubit>().state;
+    if (gameState is GameInProgress) {
+      speed += (gameState.level - 1) * 5;
+    }
+
     moveTimer = Timer(
       2,
       repeat: true,
