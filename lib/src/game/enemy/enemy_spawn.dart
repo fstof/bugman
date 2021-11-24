@@ -35,13 +35,14 @@ class EnemySpawner extends GameComponent {
       gameRef.children.whereType<EnemyBug>().forEach((element) {
         element.removeFromParent();
       });
+
       for (var k = 0; k < ButType.values.length; k++) {
         gameRef.add(EnemyBug.createEnemy(
           type: ButType.values[k],
           position: spawnPoints.elementAt(k).position.position,
         ));
       }
+      enemiesSpawned = true;
     }
-    enemiesSpawned = true;
   }
 }

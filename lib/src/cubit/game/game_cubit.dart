@@ -15,7 +15,7 @@ class GameCubit extends Cubit<GameState> {
     _stopMusic();
     _playIntro();
     if (level == 1) {
-      emit(LevelIntro(score: 0, lives: 3, collectableCount: 20, level: 1));
+      emit(LevelIntro(reset: true, score: 0, lives: 3, collectableCount: 20, level: 1));
       await Future.delayed(const Duration(seconds: 4));
       emit(GameInProgress(
         reset: true,

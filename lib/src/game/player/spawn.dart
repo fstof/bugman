@@ -22,10 +22,6 @@ class Spawner extends GameComponent {
     _gameCubit.stream.listen((state) {
       if (state is GameInProgress && state.reset) {
         playerSpawned = false;
-        gameRef.resumeEngine();
-      }
-      if (state is LevelIntro) {
-        pauseGame = true;
       }
     });
   }
@@ -41,14 +37,6 @@ class Spawner extends GameComponent {
       if (spawnPoint.isNotEmpty && player != null) {
         player.vectorPosition = spawnPoint.first.vectorPosition - player.position.size * 0.5;
         playerSpawned = true;
-      }
-    } else {
-      if (pauseGame) {
-        if ((gameRef.player?.isVisible ?? false) &&
-            gameRef.children.whereType<Enemy>().first.isVisible) {
-          pauseGame = false;
-          gameRef.pauseEngine();
-        }
       }
     }
   }

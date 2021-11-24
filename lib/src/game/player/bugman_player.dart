@@ -52,7 +52,6 @@ class BugmanPlayer extends SimplePlayer with ObjectCollision {
     joystickChangeDirectional(JoystickDirectionalEvent(directional: JoystickMoveDirectional.IDLE));
 
     FlameAudio.play('bleeps/die.wav');
-    gameRef.pauseEngine();
   }
 
   @override

@@ -48,7 +48,17 @@ class MainGame extends StatelessWidget {
             moveOnlyMapArea: true,
             // zoom: 4,
           ),
-          onReady: (game) {
+          onReady: (game) async {
+            await Future.delayed(const Duration(milliseconds: 100));
+
+            context.read<GameCubit>().stream.listen((state) {
+              if (state is LevelIntro || state is LifeLost) {
+                game.pauseEngine();
+              } else if (state is GameInProgress && state.reset) {
+                game.resumeEngine();
+              }
+            });
+
             context.read<GlitchCubit>().start();
             context.read<GameCubit>().levelStarted(level: level);
           },
