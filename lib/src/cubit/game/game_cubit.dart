@@ -14,13 +14,21 @@ class GameCubit extends Cubit<GameState> {
   void levelStarted({int level = 1}) async {
     _playIntro();
     if (level == 1) {
-      emit(LevelIntro(reset: true, score: 0, lives: 3, collectableCount: 20, level: 1));
+      emit(LevelIntro(
+        reset: true,
+        score: 0,
+        lives: 3,
+        // collectableCount: 20, // test_map.json
+        collectableCount: 290, // map.json
+        level: 1,
+      ));
     } else {
       emit(LevelIntro(
         reset: true,
         score: (state as GameInProgress).score,
         lives: (state as GameInProgress).lives,
-        collectableCount: 20,
+        // collectableCount: 20, // test_map.json
+        collectableCount: 290, // map.json
         level: (state as GameInProgress).level,
       ));
     }
