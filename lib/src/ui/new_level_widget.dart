@@ -1,10 +1,25 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../cubit/game/game_cubit.dart';
 
-class NewLevelWidget extends StatelessWidget {
+class NewLevelWidget extends StatefulWidget {
   const NewLevelWidget({Key? key}) : super(key: key);
+
+  @override
+  State<NewLevelWidget> createState() => _NewLevelWidgetState();
+}
+
+class _NewLevelWidgetState extends State<NewLevelWidget> {
+  @override
+  void initState() {
+    super.initState();
+    Timer(const Duration(seconds: 4), () {
+      context.read<GameCubit>().continueGame();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -64,8 +64,8 @@ class MainGame extends StatelessWidget {
           },
           interface: Hud(context.read<GameCubit>()),
           map: TiledWorldMap(
-            // 'maps/map.json',
-            'maps/test_map.json',
+            'maps/map.json',
+            // 'maps/test_map.json',
             forceTileSize: const Size(tileSize, tileSize),
             objectsBuilder: {
               'player_spawner': (properties) {

@@ -17,7 +17,6 @@ class Collectable extends GameDecoration with Sensor {
       Vector2Rect(Vector2(tileSize, tileSize) / 4, Vector2(tileSize, tileSize) / 2),
       intervalCheck: 10,
     );
-    gameCubit.incCollecatbleCount();
   }
 
   @override

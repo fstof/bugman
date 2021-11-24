@@ -12,18 +12,9 @@ class GameCubit extends Cubit<GameState> {
   GameCubit() : super(GameMenu());
 
   void levelStarted({int level = 1}) async {
-    _stopMusic();
     _playIntro();
     if (level == 1) {
       emit(LevelIntro(reset: true, score: 0, lives: 3, collectableCount: 20, level: 1));
-      await Future.delayed(const Duration(seconds: 4));
-      emit(GameInProgress(
-        reset: true,
-        score: (state as GameInProgress).score,
-        lives: (state as GameInProgress).lives,
-        collectableCount: (state as GameInProgress).collectableCount,
-        level: (state as GameInProgress).level,
-      ));
     } else {
       emit(LevelIntro(
         reset: true,
@@ -32,27 +23,16 @@ class GameCubit extends Cubit<GameState> {
         collectableCount: 20,
         level: (state as GameInProgress).level,
       ));
-      await Future.delayed(const Duration(seconds: 4));
-      emit(GameInProgress(
-        reset: true,
-        score: (state as GameInProgress).score,
-        lives: (state as GameInProgress).lives,
-        collectableCount: (state as GameInProgress).collectableCount,
-        level: (state as GameInProgress).level,
-      ));
     }
-    _playMusic();
   }
 
   void retry() async {
-    _stopMusic();
     emit(GameMenu());
   }
 
   void continueGame() async {
-    _stopMusic();
-    _playIntro();
     if (state is LifeLost) {
+      _playIntro();
       emit(LevelIntro(
         reset: true,
         score: (state as GameInProgress).score,
@@ -61,7 +41,8 @@ class GameCubit extends Cubit<GameState> {
         level: (state as GameInProgress).level,
       ));
       await Future.delayed(const Duration(seconds: 4));
-
+    } else if (state is LevelIntro) {
+      _playMusic();
       emit(GameInProgress(
         reset: true,
         score: (state as GameInProgress).score,
@@ -70,7 +51,6 @@ class GameCubit extends Cubit<GameState> {
         level: (state as GameInProgress).level,
       ));
     }
-    _playMusic();
   }
 
   void playerDied() {
@@ -104,42 +84,23 @@ class GameCubit extends Cubit<GameState> {
     }
   }
 
-  void setCollectableCount(int count) {
-    if (state is GameInProgress) {
-      emit(GameInProgress(
-          score: (state as GameInProgress).score,
-          lives: (state as GameInProgress).lives,
-          collectableCount: count,
-          level: (state as GameInProgress).level));
-    }
-  }
-
-  void incCollecatbleCount() {
-    if (state is GameInProgress) {
-      emit(GameInProgress(
-          score: (state as GameInProgress).score,
-          lives: (state as GameInProgress).lives,
-          collectableCount: (state as GameInProgress).collectableCount + 1,
-          level: (state as GameInProgress).level));
-    }
-  }
-
   void decCollectableCount() {
     if (state is GameInProgress) {
-      var ct = (state as GameInProgress).collectableCount;
-      // print('collectableCount count $ct');
       if ((state as GameInProgress).collectableCount <= 1) {
+        _stopMusic();
         emit(LevelComplete(
-            score: (state as GameInProgress).score,
-            lives: (state as GameInProgress).lives,
-            collectableCount: (state as GameInProgress).collectableCount - 1,
-            level: (state as GameInProgress).level + 1));
+          score: (state as GameInProgress).score,
+          lives: (state as GameInProgress).lives,
+          collectableCount: (state as GameInProgress).collectableCount - 1,
+          level: (state as GameInProgress).level + 1,
+        ));
       } else {
         emit(GameInProgress(
-            score: (state as GameInProgress).score,
-            lives: (state as GameInProgress).lives,
-            collectableCount: (state as GameInProgress).collectableCount - 1,
-            level: (state as GameInProgress).level));
+          score: (state as GameInProgress).score,
+          lives: (state as GameInProgress).lives,
+          collectableCount: (state as GameInProgress).collectableCount - 1,
+          level: (state as GameInProgress).level,
+        ));
       }
     }
   }
