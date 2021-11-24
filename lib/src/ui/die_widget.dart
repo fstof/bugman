@@ -38,7 +38,7 @@ class _DieWidgetState extends State<DieWidget> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text(
-              'Bummer\n$timeLeft',
+              'Bugger\n$timeLeft',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headline1,
             ),
