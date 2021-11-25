@@ -53,9 +53,7 @@ class MainGame extends StatelessWidget {
             await Future.delayed(const Duration(milliseconds: 100));
 
             context.read<GameCubit>().stream.listen((state) {
-              if (state is LevelIntro ||
-                  state is LifeLost ||
-                  state is LevelComplete) {
+              if (state is LevelIntro || state is LifeLost || state is LevelComplete) {
                 game.pauseEngine();
               } else if (state is GameInProgress && state.reset) {
                 game.resumeEngine();

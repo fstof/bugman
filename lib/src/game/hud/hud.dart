@@ -54,7 +54,7 @@ class Hud extends GameInterface {
           color: Theme.of(context).colorScheme.primary,
         );
     final textSpan = TextSpan(
-      text: 'Score: ${gameState?.score}',
+      text: 'Score: ${gameState?.score ?? 0}',
       style: textStyle,
     );
     final textPainter = TextPainter(
@@ -99,9 +99,7 @@ class Hud extends GameInterface {
 
   void _drawAmmo(Canvas canvas) {
     sprayCan?.renderRect(
-        canvas,
-        Rect.fromLTWH(
-            position.right - 85, position.bottom - 43, tileSize, tileSize));
+        canvas, Rect.fromLTWH(position.right - 85, position.bottom - 43, tileSize, tileSize));
 
     final textStyle = Theme.of(context).textTheme.headline4!.copyWith(
           color: Theme.of(context).colorScheme.primary,
@@ -127,15 +125,12 @@ class Hud extends GameInterface {
 
   void _drawPowerup(Canvas canvas) {
     powerUp?.renderRect(
-        canvas,
-        Rect.fromLTWH(
-            position.right - 200, position.bottom - 43, tileSize, tileSize));
+        canvas, Rect.fromLTWH(position.right - 200, position.bottom - 43, tileSize, tileSize));
 
     final textStyle = Theme.of(context).textTheme.headline4!.copyWith(
           color: Theme.of(context).colorScheme.primary,
         );
-    var text =
-        '= ${(gameRef.player as BugmanPlayer).currentGun?.powerUpTimeLeft ?? 0}';
+    var text = '= ${(gameRef.player as BugmanPlayer).currentGun?.powerUpTimeLeft ?? 0}';
     final textSpan = TextSpan(
       text: text,
       style: textStyle,
@@ -159,7 +154,7 @@ class Hud extends GameInterface {
           color: Theme.of(context).colorScheme.primary,
         );
     final textSpan = TextSpan(
-      text: 'Level: ${gameState?.level}',
+      text: 'Level: ${gameState?.level ?? 1}',
       style: textStyle,
     );
     final textPainter = TextPainter(
