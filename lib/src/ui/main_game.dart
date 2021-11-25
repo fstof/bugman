@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire/camera/camera_config.dart';
 import 'package:bonfire/tiled/tiled_world_map.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -52,7 +53,9 @@ class MainGame extends StatelessWidget {
             await Future.delayed(const Duration(milliseconds: 100));
 
             context.read<GameCubit>().stream.listen((state) {
-              if (state is LevelIntro || state is LifeLost) {
+              if (state is LevelIntro ||
+                  state is LifeLost ||
+                  state is LevelComplete) {
                 game.pauseEngine();
               } else if (state is GameInProgress && state.reset) {
                 game.resumeEngine();
@@ -65,7 +68,7 @@ class MainGame extends StatelessWidget {
           interface: Hud(context.read<GameCubit>()),
           map: TiledWorldMap(
             'maps/map.json',
-            // 'maps/test_map.json',
+            //'maps/test_map.json',
             forceTileSize: const Size(tileSize, tileSize),
             objectsBuilder: {
               'player_spawner': (properties) {
@@ -123,8 +126,10 @@ class MainGame extends StatelessWidget {
           },
         ),
         BlocConsumer<GameCubit, GameState>(
-          listener: (context, state) {
+          listener: (context, state) async {
             if (state is LevelComplete) {
+              FlameAudio.playLongAudio('music/level_complete.wav');
+              await Future.delayed(const Duration(seconds: 4));
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (context) => MainGame(

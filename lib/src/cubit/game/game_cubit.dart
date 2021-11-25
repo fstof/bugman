@@ -18,7 +18,7 @@ class GameCubit extends Cubit<GameState> {
         reset: true,
         score: 0,
         lives: 3,
-        // collectableCount: 20, // test_map.json
+        //collectableCount: 20, // test_map.json
         collectableCount: 290, // map.json
         level: 1,
       ));
@@ -27,7 +27,7 @@ class GameCubit extends Cubit<GameState> {
         reset: true,
         score: (state as GameInProgress).score,
         lives: (state as GameInProgress).lives,
-        // collectableCount: 20, // test_map.json
+        //collectableCount: 20, // test_map.json
         collectableCount: 290, // map.json
         level: (state as GameInProgress).level,
       ));
