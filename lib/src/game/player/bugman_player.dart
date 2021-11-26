@@ -51,7 +51,7 @@ class BugmanPlayer extends SimplePlayer with ObjectCollision {
     nextDirectional = JoystickMoveDirectional.IDLE;
     joystickChangeDirectional(JoystickDirectionalEvent(directional: JoystickMoveDirectional.IDLE));
 
-    FlameAudio.play('bleeps/die.wav');
+    FlameAudio.play('bleeps/die.mp3');
   }
 
   @override
@@ -128,7 +128,7 @@ class BugmanPlayer extends SimplePlayer with ObjectCollision {
   }
 
   void getGun(Gun gun) {
-    FlameAudio.play('bleeps/get-can.wav');
+    FlameAudio.play('bleeps/get-can.mp3');
     currentGun = gun;
   }
 
@@ -138,7 +138,7 @@ class BugmanPlayer extends SimplePlayer with ObjectCollision {
 
   void powerup() {
     currentGun?.powerUp = true;
-    FlameAudio.play('bleeps/power-up.wav');
+    FlameAudio.play('bleeps/power-up.mp3');
   }
 
   void addScore(int score) {

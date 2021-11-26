@@ -111,7 +111,7 @@ abstract class EnemyBug extends SimpleEnemy
 
   void returnToHome() {
     if (_goingHome) return;
-    FlameAudio.play('bleeps/kill.wav');
+    FlameAudio.play('bleeps/kill.mp3');
 
     _goingHome = true;
     stopMoveAlongThePath();

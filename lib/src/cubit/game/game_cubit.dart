@@ -119,14 +119,14 @@ class GameCubit extends Cubit<GameState> {
   }
 
   Future<void> _playIntro() async {
-    FlameAudio.playLongAudio('music/level_start.wav');
+    FlameAudio.playLongAudio('music/level_start.mp3');
   }
 
   Future<void> _playMusic() async {
     if (_musicPlayer != null) {
       _musicPlayer?.resume();
     } else {
-      _musicPlayer = await FlameAudio.loopLongAudio('music/level_play.wav');
+      _musicPlayer = await FlameAudio.loopLongAudio('music/level_play.mp3');
     }
   }
 

@@ -22,15 +22,15 @@ void main() async {
     await Flame.device.fullScreen();
   }
   await FlameAudio.audioCache.loadAll([
-    'bleeps/collect.wav',
-    'bleeps/die.wav',
-    'bleeps/get-can.wav',
-    'bleeps/kill.wav',
-    'bleeps/power-up.wav',
-    'bleeps/spray.wav',
+    'bleeps/collect.mp3',
+    'bleeps/die.mp3',
+    'bleeps/get-can.mp3',
+    'bleeps/kill.mp3',
+    'bleeps/power-up.mp3',
+    'bleeps/spray.mp3',
     'music/level_complete.wav',
-    'music/level_play.wav',
-    'music/level_start.wav',
+    'music/level_play.mp3',
+    'music/level_start.mp3',
   ]);
   runApp(const MyApp());
 }

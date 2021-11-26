@@ -31,7 +31,7 @@ class Collectable extends GameDecoration with Sensor {
       component.addScore(10);
       gameCubit.decCollectableCount();
       removeFromParent();
-      FlameAudio.play('bleeps/collect.wav');
+      FlameAudio.play('bleeps/collect.mp3');
     }
   }
 }

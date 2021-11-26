@@ -166,7 +166,7 @@ class Gun extends GameDecoration with Sensor {
   }
 
   void shoot() {
-    FlameAudio.play('bleeps/spray.wav');
+    FlameAudio.play('bleeps/spray.mp3');
     _ammo--;
     gameRef.add(currentBullet = Bullet(
       position: _bulletPosition,
