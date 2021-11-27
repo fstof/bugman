@@ -14,7 +14,8 @@ import 'src/ui/theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   LicenseRegistry.addLicense(() async* {
-    final gfLicense = await rootBundle.loadString('assets/google_fonts/OFL.txt');
+    final gfLicense =
+        await rootBundle.loadString('assets/google_fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], gfLicense);
   });
   if (!kIsWeb) {
@@ -28,7 +29,7 @@ void main() async {
     'bleeps/kill.mp3',
     'bleeps/power-up.mp3',
     'bleeps/spray.mp3',
-    'music/level_complete.wav',
+    'music/level_complete.mp3',
     'music/level_play.mp3',
     'music/level_start.mp3',
   ]);

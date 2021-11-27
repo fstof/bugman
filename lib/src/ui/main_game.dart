@@ -53,7 +53,9 @@ class MainGame extends StatelessWidget {
             await Future.delayed(const Duration(milliseconds: 100));
 
             context.read<GameCubit>().stream.listen((state) {
-              if (state is LevelIntro || state is LifeLost || state is LevelComplete) {
+              if (state is LevelIntro ||
+                  state is LifeLost ||
+                  state is LevelComplete) {
                 game.pauseEngine();
               } else if (state is GameInProgress && state.reset) {
                 game.resumeEngine();
@@ -126,7 +128,7 @@ class MainGame extends StatelessWidget {
         BlocConsumer<GameCubit, GameState>(
           listener: (context, state) async {
             if (state is LevelComplete) {
-              FlameAudio.playLongAudio('music/level_complete.wav');
+              FlameAudio.playLongAudio('music/level_complete.mp3');
               await Future.delayed(const Duration(seconds: 4));
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
